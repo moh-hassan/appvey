@@ -1,0 +1,69 @@
+﻿{
+   "project":{
+      "projectId":42438,
+      "accountId":2,
+      "accountName":"appvyr",
+      "builds":[
+
+      ],
+      "name":"wix-test",
+      "slug":"wix-test",
+      "repositoryType":"gitHub",
+      "repositoryScm":"git",
+      "repositoryName":"moh-hassan/wix-test",
+      "isPrivate":false,
+      "skipBranchesWithoutAppveyorYml":false,
+      "created":"2014-08-09T00:30:43.3327131+00:00"
+   },
+   "builds":[
+      {
+         "buildId":134174,
+         "jobs":[
+
+         ],
+         "buildNumber":5,
+         "version":"1.0.5",
+         "message":"Enabled diag mode",
+         "branch":"master",
+         "commitId":"d19740243e3ec5497345de0f7d828e66a7cd1a6b",
+         "authorName":"moh-hassan",
+         "authorUsername":"moh-hassan",
+         "committerName":"moh-hassan",
+         "committerUsername":"moh-hassan",
+         "committed":"2014-08-10T14:08:16+00:00",
+         "messages":[
+
+         ],
+         "status":"success",
+         "started":"2014-08-14T05:42:17.2696755+00:00",
+         "finished":"2014-08-14T05:43:47.4732355+00:00",
+         "created":"2014-08-14T05:39:30.8845902+00:00",
+         "updated":"2014-08-14T05:43:47.4732355+00:00"
+      },
+      {
+         "buildId":129289,
+         "jobs":[
+
+         ],
+         "buildNumber":3,
+         "version":"1.0.3",
+         "message":"Added appveyor.yml",
+         "branch":"master",
+         "commitId":"28c6eec932c0e21eca5bb5571a722f850aa8bf6f",
+         "authorName":"moh-hassan",
+         "authorUsername":"moh-hassan",
+         "committerName":"moh-hassan",
+         "committerUsername":"moh-hassan",
+         "committed":"2014-08-09T00:33:34+00:00",
+         "messages":[
+
+         ],
+         "status":"success",
+         "started":"2014-08-09T15:42:45.7878479+00:00",
+         "finished":"2014-08-09T15:44:15.5828009+00:00",
+         "created":"2014-08-09T15:42:38.8315273+00:00",
+         "updated":"2014-08-09T15:44:15.5828009+00:00"
+      }
+   ]
+}
+

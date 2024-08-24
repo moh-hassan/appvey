@@ -1,0 +1,35 @@
+{
+  "Guid": "e5496a76-961b-4f55-9f5f-6663c5d77aca",
+  "UpdatedAt": "2024-07-21T15:11:35.9602169Z",
+  "Title": "GetProjectBuildByVersion",
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "ExactMatcher",
+          "Pattern": "/api/projects/moh-hassan/cloudbuilder/build/1.0.0-dev-1"          
+        }
+      ]
+    },
+    "Methods": [
+      "GET"
+    ],
+    "Headers": [
+      {
+        "Name": "Authorization",
+        "Matchers": [
+          {
+            "Name": "RegexMatcher",
+            "Pattern": "Bearer .+",
+            "IgnoreCase": false
+          }
+        ]
+      }
+    ]
+  },
+  "Response": {
+    "StatusCode": 200,
+    "BodyAsFile": "files\\Get_project_last_build.json",
+    "BodyAsFileIsCached": false
+  }
+}

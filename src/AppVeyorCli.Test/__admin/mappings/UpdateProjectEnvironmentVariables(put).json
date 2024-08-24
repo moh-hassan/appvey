@@ -1,0 +1,45 @@
+{
+  "Guid": "71059c41-cfa9-44af-a536-17798338a3c3",
+  "UpdatedAt": "2024-07-21T15:11:35.980482Z",
+  "Title": "UpdateProjectEnvironmentVariables(put)",
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "WildcardMatcher",
+          "Pattern": "/api/projects/moh-hassan/cloudbuilder/settings/environment-variables",
+          "IgnoreCase": false
+        }
+      ]
+    },
+    "Methods": [
+      "PUT"
+    ],
+    "Headers": [
+      {
+        "Name": "Authorization",
+        "Matchers": [
+          {
+            "Name": "RegexMatcher",
+            "Pattern": "Bearer [a-zA-Z0-9_]+",
+            "IgnoreCase": false
+          }
+        ]
+      }
+    ],
+    "Body": {
+      "Matcher": {
+        "Name": "JsonMatcher",
+        "Pattern": "[\r\n{\r\n    \"name\":\"api_key\",\r\n    \"value\":{\r\n        \"isEncrypted\":true,\r\n        \"value\":\"very-secret-key-encrypted\"\r\n    }\r\n},\r\n{\r\n    \"name\":\"var1\",\r\n    \"value\":{\r\n        \"isEncrypted\":false,\r\n        \"value\":\"new-value\"\r\n    }\r\n}\r\n]",
+        "IgnoreCase": false,
+        "Regex": false
+      }
+    }
+  },
+  "Response": {
+    "StatusCode": 204,
+    "Headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

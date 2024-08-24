@@ -1,0 +1,35 @@
+{
+  "Guid": "eec1efb8-d050-4ddf-bc5f-1026b87f0e94",
+  "UpdatedAt": "2024-07-21T15:11:35.9604381Z",
+  "Title": "GetProjectHistory",
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "ExactMatcher",
+          "Pattern": "/api/projects/moh-hassan/cloudbuilder/history"          
+        }
+      ]
+    },
+    "Methods": [
+      "GET"
+    ],
+    "Headers": [
+      {
+        "Name": "Authorization",
+        "Matchers": [
+          {
+            "Name": "RegexMatcher",
+            "Pattern": "Bearer .+",
+            "IgnoreCase": false
+          }
+        ]
+      }
+    ]
+  },
+  "Response": {
+    "StatusCode": 200,
+    "BodyAsFile": "files\\Get_project_history.json",
+    "BodyAsFileIsCached": false
+  }
+}

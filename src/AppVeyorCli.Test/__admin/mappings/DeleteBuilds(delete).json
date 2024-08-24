@@ -1,0 +1,37 @@
+{
+  "Guid": "aa0a0fc0-dd17-49c0-98c4-ff67852e121f",
+  "UpdatedAt": "2024-07-21T15:11:35.991357Z",
+  "Title": "DeleteBuilds(delete)",
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "WildcardMatcher",
+          "Pattern": "/api/account/moh-hassan/builds/50127590",
+          "IgnoreCase": false
+        }
+      ]
+    },
+    "Methods": [
+      "DELETE"
+    ],
+    "Headers": [
+      {
+        "Name": "Authorization",
+        "Matchers": [
+          {
+            "Name": "RegexMatcher",
+            "Pattern": "Bearer [a-zA-Z0-9_]+",
+            "IgnoreCase": false
+          }
+        ]
+      }
+    ]
+  },
+  "Response": {
+    "StatusCode": 204,
+    "Headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

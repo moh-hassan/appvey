@@ -1,0 +1,35 @@
+{
+  "Guid": "9a5425f3-e498-475b-be13-1a90c2ad4c2f",
+  "UpdatedAt": "2024-07-21T15:11:35.991572Z",
+  "Title": "DownloadBuildLog",
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "WildcardMatcher",
+          "Pattern": "/api/buildjobs/3akc42kgf8d7fvyt/log"          
+        }
+      ]
+    },
+    "Methods": [
+      "GET"
+    ],
+    "Headers": [
+      {
+        "Name": "Authorization",
+        "Matchers": [
+          {
+            "Name": "RegexMatcher",
+            "Pattern": "Bearer .+",
+            "IgnoreCase": false
+          }
+        ]
+      }
+    ]
+  },
+  "Response": {
+    "StatusCode": 200,
+    "BodyAsFile": "files\\Get_project_last_build.json",
+    "BodyAsFileIsCached": false
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "Guid": "0a355869-0c47-4bb6-884f-13e51be5dc56",
+  "UpdatedAt": "2024-07-21T15:11:35.9612623Z",
+  "Title": "GetProjectEnvironmentVariables",
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "WildcardMatcher",
+          "Pattern": "/api/projects/moh-hassan/cloudbuilder/settings/environment-variables",
+          "IgnoreCase": false
+        }
+      ]
+    },
+    "Methods": [
+      "GET"
+    ],
+    "Headers": [
+      {
+        "Name": "Authorization",
+        "Matchers": [
+          {
+            "Name": "RegexMatcher",
+            "Pattern": "Bearer .+",
+            "IgnoreCase": false
+          }
+        ]
+      }
+    ]
+  },
+  "Response": {
+    "StatusCode": 200,
+    "BodyAsFile": "files\\Get_project_environment_variables.json",
+    "BodyAsFileIsCached": false
+  }
+}

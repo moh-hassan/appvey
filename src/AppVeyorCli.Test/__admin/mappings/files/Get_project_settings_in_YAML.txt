@@ -1,0 +1,6 @@
+version: 1.0.{build}
+build:
+  project: MySolution.sln
+  verbosity: minimal
+  publish_wap: true
+  

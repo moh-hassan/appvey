@@ -1,0 +1,36 @@
+{
+  "Guid": "780f5301-c282-44d6-840d-d037803331a6",
+  "UpdatedAt": "2024-07-21T15:11:35.9608314Z",
+  "Title": "GetProjectSettings",
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "WildcardMatcher",
+          "Pattern": "/api/projects/moh-hassan/cloudbuilder/settings",
+          "IgnoreCase": false
+        }
+      ]
+    },
+    "Methods": [
+      "GET"
+    ],
+    "Headers": [
+      {
+        "Name": "Authorization",
+        "Matchers": [
+          {
+            "Name": "RegexMatcher",
+            "Pattern": "Bearer .+",
+            "IgnoreCase": false
+          }
+        ]
+      }
+    ]
+  },
+  "Response": {
+    "StatusCode": 200,
+    "BodyAsFile": "files\\Get_project_settings.json",
+    "BodyAsFileIsCached": false
+  }
+}

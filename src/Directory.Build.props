@@ -1,0 +1,68 @@
+<Project>
+  <PropertyGroup>
+    <LangVersion>12.0</LangVersion>
+    <Version>1.0.0-beta5</Version>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <SolutionDir Condition="'$(SolutionDir)'==''">$(MSBuildThisFileDirectory)</SolutionDir>
+    <PackageOutputPath>$(SolutionDir)..\nupkg</PackageOutputPath>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Authors>Mohamed Hassan</Authors>
+    <Copyright>Copyright (c) 2024 Mohamed Hassan</Copyright>
+    <PackageProjectUrl>https://github.com/moh-hassan/appvey</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/moh-hassan/appvey</RepositoryUrl>
+    <Description>
+      Work seamlessly with Appveyor CI/CD from the command line, helping users to maintain appveyor projects, run builds and download artifacts using Appveyor REST API.
+    </Description>
+    <IsTestProject>$(MSBuildProjectName.Contains('Test'))</IsTestProject>
+    <Company>appvey</Company>
+    <PackageReleaseNotes>https://github.com/moh-hassan/appvey/ReleaseNotes.md </PackageReleaseNotes>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <IncludeSourceRevisionInInformationalVersion>true</IncludeSourceRevisionInInformationalVersion>
+    <PackageTags>appveyor;appvey;rest;api;http;https;wiremock</PackageTags>
+    <DefineConstants>$(DefineConstants);DEVELOP</DefineConstants>
+    <NoWarn>$(NoWarn);CS3009</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IsWindows Condition="'$(OS)' == 'Windows_NT'">true</IsWindows>
+    <IncludeTransitiveItems>false</IncludeTransitiveItems>
+    <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="$(SolutionDir)..\LICENSE" Pack="true" PackagePath="" />
+    <None Include="$(PackageIconFullPath)" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <PropertyGroup Label="analysis">
+    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+    <RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
+    <UseSonar>false</UseSonar>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(UseSonar)' == 'true'">
+    <PackageReference Include="SonarAnalyzer.CSharp">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <GlobalAnalyzerConfigFiles
+      Include="$(MSBuildThisFileDirectory)SonarDotnet.Analyzers.globalconfig" />
+  </ItemGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+</Project>

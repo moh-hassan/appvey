@@ -1,0 +1,36 @@
+{
+  "Guid": "2b7c646d-f756-4cdf-9338-28024083f83c",
+  "UpdatedAt": "2024-07-21T15:11:35.984795Z",
+  "Title": "UpdateProjectSettingsInYaml(put)",
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "WildcardMatcher",
+          "Pattern": "/api/projects/moh-hassan/cloudbuilder/settings/yaml",
+          "IgnoreCase": false
+        }
+      ]
+    },
+    "Methods": [
+      "put"
+    ],
+    "Headers": [
+      {
+        "Name": "Authorization",
+        "Matchers": [
+          {
+            "Name": "RegexMatcher",
+            "Pattern": "Bearer [a-zA-Z0-9_]+",
+            "IgnoreCase": false
+          }
+        ]
+      }
+    ]
+  },
+  "Response": {
+    "StatusCode": 204,
+    "BodyDestination": "SameAsSource",
+    "Body": "response from path: /api/projects/moh-hassan/cloudbuilder/settings/yaml"
+  }
+}

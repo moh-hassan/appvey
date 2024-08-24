@@ -1,0 +1,49 @@
+﻿[
+   {
+      "projectId":19096,
+      "accountId":2,
+      "accountName":"moh-hassan",
+      "builds":[
+         {
+            "buildId":23864,
+            "jobs":[
+
+            ],
+            "buildNumber":3,
+            "version":"1.0.3",
+            "message":"replaced with command [skip ci]",
+            "branch":"master",
+            "commitId":"c2892a70d60c96c1b65a7c665ab806b7731fea8a",
+            "authorName":"moh-hassan",
+            "authorUsername":"moh-hassan",
+            "committerName":"moh-hassan",
+            "committerUsername":"moh-hassan",
+            "committed":"2014-08-15T22:05:54+00:00",
+            "messages":[
+
+            ],
+            "status":"success",
+            "started":"2014-08-15T22:36:38.1757886+00:00",
+            "finished":"2014-08-15T22:37:00.6171479+00:00",
+            "created":"2014-08-15T22:33:15.9833328+00:00",
+            "updated":"2014-08-15T22:37:00.6171479+00:00"
+         }
+      ],
+      "name":"appveyor-artifact-test",
+      "slug":"appveyor-artifact-test",
+      "repositoryType":"gitHub",
+      "repositoryScm":"git",
+      "repositoryName":"moh-hassan/appveyor-artifact-test",
+      "repositoryBranch":"master",
+      "isPrivate":false,
+      "skipBranchesWithoutAppveyorYml":false,
+      "nuGetFeed":{
+         "id":"appveyor-artifact-test-j8kk0o",
+         "name":"Project appveyor-artifact-test",
+         "publishingEnabled":false,
+         "created":"2014-08-15T22:04:21.3111546+00:00"
+      },
+      "created":"2014-08-15T22:04:19.2868375+00:00"
+   }
+]
+

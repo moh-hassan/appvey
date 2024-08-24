@@ -1,0 +1,17 @@
+﻿{
+   "projectId":43682,
+   "accountId":2,
+   "accountName":"appvyr",
+   "builds":[
+
+   ],
+   "name":"demo-app",
+   "slug":"demo-app-335",
+   "repositoryType":"gitHub",
+   "repositoryScm":"git",
+   "repositoryName":"moh-hassan/demo-app",
+   "isPrivate":false,
+   "skipBranchesWithoutAppveyorYml":false,
+   "created":"2014-08-16T00:52:15.6604826+00:00"
+}
+

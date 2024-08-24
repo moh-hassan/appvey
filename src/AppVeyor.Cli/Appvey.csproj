@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Global tool">
+    <PackageId>Appvey</PackageId>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>appvey</ToolCommandName>
+    <Product>appvey</Product>
+    <Title>Appveyor Cli global tool</Title>
+    <PackageIcon>appveyor.png</PackageIcon>
+    <PackageTags>appVeyor;appvey;rest;api;cli;CI;CD</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="AppVeyor.Test" />
+  </ItemGroup>
+
+  <ItemGroup Label="pkg contents">
+    <None Include="..\art\appveyor.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release' ">
+    <DebugType>None</DebugType>
+    <DebugSymbols>False</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DotMake.CommandLine" />
+    <PackageReference Include="ConsoleTables" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AppVeyor.RestApi\AppVeyor.Api.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,35 @@
+{
+  "Guid": "88208c88-c497-4a1d-a726-216ff7194ca7",
+  "UpdatedAt": "2024-07-21T15:11:35.9600227Z",
+  "Title": "GetProjectLastBranchBuild",
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "ExactMatcher",
+          "Pattern": "/api/projects/moh-hassan/cloudbuilder/branch/master"          
+        }
+      ]
+    },
+    "Methods": [
+      "GET"
+    ],
+    "Headers": [
+      {
+        "Name": "Authorization",
+        "Matchers": [
+          {
+            "Name": "RegexMatcher",
+            "Pattern": "Bearer .+",
+            "IgnoreCase": false
+          }
+        ]
+      }
+    ]
+  },
+  "Response": {
+    "StatusCode": 200,
+    "BodyAsFile": "files\\Get_project_last_build.json",
+    "BodyAsFileIsCached": false
+  }
+}

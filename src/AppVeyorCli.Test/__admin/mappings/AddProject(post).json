@@ -1,0 +1,45 @@
+{
+  "Guid": "8f7855de-d718-4998-a75a-9087c60d9b1e",
+  "UpdatedAt": "2024-07-21T15:11:35.9788082Z",
+  "Title": "AddProject(post)",
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "WildcardMatcher",
+          "Pattern": "/api/account/moh-hassan/projects",
+          "IgnoreCase": false
+        }
+      ]
+    },
+    "Methods": [
+      "POST"
+    ],
+    "Headers": [
+      {
+        "Name": "Authorization",
+        "Matchers": [
+          {
+            "Name": "RegexMatcher",
+            "Pattern": "Bearer [a-zA-Z0-9_]+",
+            "IgnoreCase": false
+          }
+        ]
+      }
+    ],
+    "Body": {
+      "Matcher": {
+        "Name": "JsonMatcher",
+        "Pattern": "{\"repositoryProvider\":\"gitHub\",\"repositoryName\":\"test\"}",
+        "IgnoreCase": false,
+        "Regex": false
+      }
+    }
+  },
+  "Response": {
+    "StatusCode": 200,
+    "Headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

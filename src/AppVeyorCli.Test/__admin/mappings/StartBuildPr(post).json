@@ -1,0 +1,45 @@
+{
+  "Guid": "cec8f317-7d01-47d3-ac9c-281aa697ac21",
+  "UpdatedAt": "2024-07-21T15:11:35.9910656Z",
+  "Title": "StartBuildPr(post)",
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "WildcardMatcher",
+          "Pattern": "/api/account/moh-hassan/builds",
+          "IgnoreCase": false
+        }
+      ]
+    },
+    "Methods": [
+      "POST"
+    ],
+    "Headers": [
+      {
+        "Name": "Authorization",
+        "Matchers": [
+          {
+            "Name": "RegexMatcher",
+            "Pattern": "Bearer [a-zA-Z0-9_]+",
+            "IgnoreCase": false
+          }
+        ]
+      }
+    ],
+    "Body": {
+      "Matcher": {
+        "Name": "JsonMatcher",
+        "Pattern": "{\"accountName\":\"moh-hassan\",\"projectSlug\":\"cloudbuilder\",\"pullRequestId\":\"123\"}",
+        "IgnoreCase": false,
+        "Regex": false
+      }
+    }
+  },
+  "Response": {
+    "StatusCode": 200,
+    "Headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

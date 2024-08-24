@@ -1,0 +1,37 @@
+{
+  "Guid": "7dcf463f-89d0-4a6d-86b0-8108b3c40b4b",
+  "UpdatedAt": "2024-07-21T15:11:35.9840825Z",
+  "Title": "DeleteProjectBuildCache(delete)",
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "WildcardMatcher",
+          "Pattern": "/api/projects/moh-hassan/cloudbuilder/buildcache",
+          "IgnoreCase": false
+        }
+      ]
+    },
+    "Methods": [
+      "DELETE"
+    ],
+    "Headers": [
+      {
+        "Name": "Authorization",
+        "Matchers": [
+          {
+            "Name": "RegexMatcher",
+            "Pattern": "Bearer [a-zA-Z0-9_]+",
+            "IgnoreCase": false
+          }
+        ]
+      }
+    ]
+  },
+  "Response": {
+    "StatusCode": 204,
+    "Headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

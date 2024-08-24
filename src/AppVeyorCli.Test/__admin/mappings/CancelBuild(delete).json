@@ -1,0 +1,37 @@
+{
+  "Guid": "348dbf19-bec2-467a-835b-9fe4cff03e62",
+  "UpdatedAt": "2024-07-21T15:11:35.9912232Z",
+  "Title": "CancelBuild(delete)",
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "WildcardMatcher",
+          "Pattern": "/api/builds/moh-hassan/cloudbuilder/1.0.0-dev-1",
+          "IgnoreCase": false
+        }
+      ]
+    },
+    "Methods": [
+      "DELETE"
+    ],
+    "Headers": [
+      {
+        "Name": "Authorization",
+        "Matchers": [
+          {
+            "Name": "RegexMatcher",
+            "Pattern": "Bearer [a-zA-Z0-9_]+",
+            "IgnoreCase": false
+          }
+        ]
+      }
+    ]
+  },
+  "Response": {
+    "StatusCode": 204,
+    "Headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

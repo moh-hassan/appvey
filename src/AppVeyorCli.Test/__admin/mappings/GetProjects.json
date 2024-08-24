@@ -1,0 +1,35 @@
+{
+  "Guid": "0267e6f8-b78b-405d-9d55-f32ca736f19c",
+  "UpdatedAt": "2024-07-21T15:11:35.959554Z",
+  "Title": "GetProjects",
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "ExactMatcher",
+          "Pattern": "/api/account/moh-hassan/projects"          
+        }
+      ]
+    },
+    "Methods": [
+      "GET"
+    ],
+    "Headers": [
+      {
+        "Name": "Authorization",
+        "Matchers": [
+          {
+            "Name": "RegexMatcher",
+            "Pattern": "Bearer .+",
+            "IgnoreCase": false
+          }
+        ]
+      }
+    ]
+  },
+  "Response": {
+    "StatusCode": 200,
+    "BodyAsFile": "files\\Get_projects.json",
+    "BodyAsFileIsCached": false
+  }
+}
