@@ -4,8 +4,10 @@
 
 -----
 
-[![Build status](https://ci.appveyor.com/api/projects/status/f4ej8g59s8jco92o/branch/main?svg=true)](https://ci.appveyor.com/project/moh-hassan/appvey/branch/main)
+[![Build status](https://ci.appveyor.com/api/projects/status/f4ej8g59s8jco92o?svg=true)](https://ci.appveyor.com/project/moh-hassan/appvey)
 
+----------
+Download development version from [myget](https://www.myget.org/feed/appvey/package/nuget/Appvey/1.0.0-beta5) 
 
 -----------
 **Features of appvey**
@@ -64,6 +66,12 @@
 ```
 dotnet tool install --global appvey
 ```
+
+ Install development version from myget, run the command:
+```
+dotnet tool install  Appvey --global --add-source https://www.myget.org/F/appvey/api/v3/index.json --prerelease   
+```
+
 ### How to use:
 Run the commands as described in [wiki pages](https://github.com/moh-hassan/appvey/wiki):
 
@@ -103,3 +111,6 @@ All programs or packages will not transfer any information to other networked sy
 **Thank you [JetBrains](https://www.jetbrains.com "JetBrain") for [Resharper](https://www.jetbrains.com/resharper/ "Resharper") open source license**
 <img src="src/art/jb_beam.png" alt="jetbrains" width="200"/>
 
+**Thank you [SignPath](https://signpath.io?utm_source=foundation&utm_medium=github&utm_campaign=odata2poco) for free code signing.**
+
+<img src="src/art/signpath.jpg" alt="signpath" width="200"/>

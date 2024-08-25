@@ -1,13 +1,19 @@
 
-#nuget version is nly changed by  RELEASE TAG 
-version: 1.0.0-beta-{build} 
+#nuget version is only changed by  RELEASE TAG 
+version: 1.0.0-beta6-{build} 
 
 image: Visual Studio 2022
 pull_requests:
-  do_not_increment_build_number: false
+  do_not_increment_build_number: true
 
+# Set the signing policy slug according to branch
+environment:
+  SIGNPATH_SIGNING_POLICY_SLUG: test-signing
+  ARTIFACT_CONFIGURATION_SLUG: appvey
+  SIGNPATH_PROJECT_SLUG : odata2poco
+  
 install:  
-  - ps: dotnet --info
+  - ps: dotnet --version
   
 init:
   - ps: |
@@ -53,7 +59,6 @@ test_script:
 
 after_test:
 - cmd: dotnet pack AppVeyor.Cli/ -c Release --version-suffix %APPVEYOR_BUILD_VERSION%  
-
  
 artifacts:
 - path: .\nupkg\*.nupkg
@@ -73,7 +78,7 @@ deploy:
     secure: XBvbm69UE+d1cuM8+VBfwMyjHDcAa79w0TBygcZsPZcl88AaLKN1EvI7KI8/K9Am
   on:
     APPVEYOR_REPO_TAG: true 
-    branch: main          
+  #  branch: main          
     
 # myget
 - provider: NuGet
@@ -81,5 +86,10 @@ deploy:
   api_key:
     secure: QAHjX2gqddFX2cNhMNqweMTGQ89q++ezKnQvdAcinY5D1rwbj2vkWeFsTykm4koA
   on:    
-    branch: develop           
+    branch: develop      
+ 
+- provider: Webhook
+  url: https://app.signpath.io/API/v1/%SIGNPATH_ORGANIZATION_ID%/Integrations/AppVeyor?ProjectSlug=%SIGNPATH_PROJECT_SLUG%&SigningPolicySlug=%SIGNPATH_SIGNING_POLICY_SLUG%&ArtifactConfigurationSlug=%ARTIFACT_CONFIGURATION_SLUG%
+  authorization: 'Bearer %SIGNPATH_CI_USER_TOKEN%'  
+  
   
