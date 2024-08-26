@@ -3,11 +3,17 @@
 **appvey**  Works seamlessly with Appveyor CI/CD from the command line, helping users to maintain appveyor projects, run builds and download artifacts using [Appveyor REST API](https://www.appveyor.com/docs/api/).
 
 -----
+<img src="src/art/demo.gif" alt="project-last-build" width="75%"/>
+
+----
 
 [![Build status](https://ci.appveyor.com/api/projects/status/f4ej8g59s8jco92o?svg=true)](https://ci.appveyor.com/project/moh-hassan/appvey)
 
 ----------
+
 Download development version from [myget](https://www.myget.org/feed/appvey/package/nuget/Appvey/1.0.0-beta5) 
+
+
 
 -----------
 **Features of appvey**

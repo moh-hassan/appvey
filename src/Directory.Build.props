@@ -5,13 +5,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <SolutionDir Condition="'$(SolutionDir)'==''">$(MSBuildThisFileDirectory)</SolutionDir>
     <PackageOutputPath>$(SolutionDir)..\nupkg</PackageOutputPath>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <Authors>Mohamed Hassan</Authors>
     <Copyright>Copyright (c) 2024 Mohamed Hassan</Copyright>
     <PackageProjectUrl>https://github.com/moh-hassan/appvey</PackageProjectUrl>
     <RepositoryUrl>https://github.com/moh-hassan/appvey</RepositoryUrl>
     <Description>
-      Work seamlessly with Appveyor CI/CD from the command line, helping users to maintain appveyor projects, run builds and download artifacts using Appveyor REST API.
+      appvey Works seamlessly with Appveyor CI/CD from the command line, helping users to maintain appveyor projects, run builds and download artifacts using Appveyor REST API.
     </Description>
     <IsTestProject>$(MSBuildProjectName.Contains('Test'))</IsTestProject>
     <Company>appvey</Company>
@@ -42,7 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="$(SolutionDir)..\LICENSE" Pack="true" PackagePath="" />
+    <None Include="$(SolutionDir)..\LICENSE.md" Pack="true" PackagePath="" />
     <None Include="$(PackageIconFullPath)" Pack="true" PackagePath="\" />
   </ItemGroup>
 
