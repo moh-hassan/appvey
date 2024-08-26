@@ -2,7 +2,7 @@
 # Appveyor cli tool
 
 ## Version 1.0.0
-**Release Date:**  2024-08-27
+**Release Date:**  2024-08-26
 - Download build artifacts either all or specific file(s) by version or job id. 
 - Implement Builds Rest APIs:
   - Start build of branch most recent commit

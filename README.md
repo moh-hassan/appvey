@@ -3,6 +3,10 @@
 **appvey**  Works seamlessly with Appveyor CI/CD from the command line, helping users to maintain appveyor projects, run builds and download artifacts using [Appveyor REST API](https://www.appveyor.com/docs/api/).
 
 -----
+## Download
+[![NuGet Version](https://img.shields.io/nuget/v/Appvey.svg?label=nuget%20Global%20tool&style=flat)](https://www.nuget.org/packages/appvey) </p>
+
+-----
 <img src="src/art/demo.gif" alt="project-last-build" width="75%"/>
 
 ----
