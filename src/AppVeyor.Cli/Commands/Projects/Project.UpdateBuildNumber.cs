@@ -6,6 +6,7 @@ namespace AppVeyor.Cli.Commands.Project;
 using Api;
 
 [CliCommand(Description = "Update project build number", Name = "build-number",
+    Aliases = ["bn"],
     Parent = typeof(AppveyorCommand.ProjectCommand.UpdateCommand))]
 public class UpdateBuildNumber : AppveyorCommandBase
 {

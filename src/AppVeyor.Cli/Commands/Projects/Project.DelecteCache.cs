@@ -5,7 +5,7 @@ namespace AppVeyor.Cli.Commands.Project;
 #nullable disable
 using Api;
 
-[CliCommand(Description = "Delete project build cache",
+[CliCommand(Description = "Delete project build cache", Aliases = ["dc"],
     Parent = typeof(AppveyorCommand.ProjectCommand))]
 public class DeleteCache : AppveyorCommandBase
 {

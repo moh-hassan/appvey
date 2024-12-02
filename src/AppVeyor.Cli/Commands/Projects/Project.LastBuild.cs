@@ -6,7 +6,7 @@ namespace AppVeyor.Cli.Commands.Project;
 using Api;
 using AppVeyorCli;
 
-[CliCommand(Description = "Get project last branch build",
+[CliCommand(Description = "Get project last branch build",Aliases = ["lb"],
     Parent = typeof(AppveyorCommand.ProjectCommand))]
 public class LastBuild : AppveyorCommandBase
 {

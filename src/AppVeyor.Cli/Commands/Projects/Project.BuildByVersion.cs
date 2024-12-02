@@ -8,7 +8,8 @@ using Api.Model;
 using AppVeyorCli;
 using RestApi.Extensions;
 
-[CliCommand(Name = "build-version", Description = "Get project build by version",
+[CliCommand(Name = "build-version",Aliases = ["bv"],
+    Description = "Get project build by version",
     Parent = typeof(AppveyorCommand.ProjectCommand))]
 public class BuildByVersion : AppveyorCommandBase
 {
@@ -20,10 +21,6 @@ public class BuildByVersion : AppveyorCommandBase
 
     [CliArgument(Description = "Build Version", Required = true)]
     public string BuildVersion { get; set; }
-
-    //todo : add support for downloading artifacts
-    //[CliOption(Description = "Where to save the downloaded artifacts", Required = false)]
-    //public DirectoryInfo Artifact { get; set; }
 
     protected override async Task<ResponseResult> RunApiAsync(ApiManager apiManager, CancellationToken ct)
     {

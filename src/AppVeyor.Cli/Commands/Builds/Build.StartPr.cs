@@ -6,7 +6,7 @@ using Api;
 
 #nullable disable
 
-[CliCommand(Description = "Start build of Pull Request",
+[CliCommand(Description = "Start build of Pull Request", Aliases = ["pull-request"],
     Parent = typeof(AppveyorCommand.BuildCommand.StartCommand))]
 public class Pr : AppveyorCommandBase
 {

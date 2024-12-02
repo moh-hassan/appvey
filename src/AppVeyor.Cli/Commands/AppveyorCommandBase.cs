@@ -29,11 +29,13 @@ public abstract class AppveyorCommandBase
         Description = "Appveyor User account or skip it to read account from environment var.")]
     public virtual string Account { get; set; }
 
-    [CliOption(Required = false, Description = "Proxy server should be in the form http://proxy:port", ValidationPattern = "^https?:\\/\\/[a-zA-Z0-9.-]+:[0-9]+$",
+    [CliOption(Required = false, Aliases = ["--pa"],
+        Description = "Proxy server should be in the form http://proxy:port",
+        ValidationPattern = "^https?:\\/\\/[a-zA-Z0-9.-]+:[0-9]+$",
         ValidationMessage = "Proxy server should be in the form http://proxy:port")]
     public string ProxyAddress { get; set; }
 
-    [CliOption(Required = false, Aliases = ["-u"],
+    [CliOption(Required = false, Name = "-u", Aliases = ["--pu","--proxy-user"],
         Description = "Proxy user/password should be in the form username:password", ValidationPattern = "^[^:]+:[^:]+$",
         ValidationMessage = "Proxy user/password should be in the form username:password")]
     public string ProxyUser { get; set; }

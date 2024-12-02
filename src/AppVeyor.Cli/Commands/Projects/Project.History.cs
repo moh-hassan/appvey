@@ -21,7 +21,8 @@ public class History : AppveyorCommandBase
     [CliOption(Required = false)]
     public string Branch { get; set; }
 
-    [CliOption(Description = "Number of records", Name = "--records")]
+    [CliOption(Description = "Number of records",
+        Aliases = ["--rn", "--records-number"])]
     public int RecordsNumber { get; set; } = 20;
 
     [CliOption(Description = "Start from build id", Required = false, Name = "--build-id")]
