@@ -8,8 +8,6 @@ using Cli = DotMake.CommandLine.Cli;
 
 public class Bootstrapper
 {
-    public ExecutionInfo ExecutionInfo { get; set; } = new();
-
     public async Task<int> StartAsync(string[] args)
     {
         var cancellationTokenSource = new CancellationTokenSource();

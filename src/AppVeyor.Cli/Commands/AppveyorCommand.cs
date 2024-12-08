@@ -5,7 +5,7 @@ namespace AppVeyor.Cli.Commands;
 #nullable disable
 
 [CliCommand(Description = "Appvey cli for Appveyor CI/CD")]
-public class AppveyorCommand
+public partial class AppveyorCommand
 {
     [CliCommand(Description = "Project command", Name = "project")]
     public class ProjectCommand
@@ -15,11 +15,6 @@ public class AppveyorCommand
         public class UpdateCommand
         {
         }
-
-        //[CliCommand(Description = "Delete with more nested commands...", Name = "delete")]
-        //public class ProjectDeleteCommand
-        //{
-        //}
     }
 
 
@@ -36,16 +31,6 @@ public class AppveyorCommand
         {
         }
     }
-
-    //[CliCommand(Description = "Download command", Name = "download")]
-    //public class DownloadCommand
-    //{
-    //    ////project update ...
-    //    //[CliCommand(Description = "Download with more nested commands...", Name = "update")]
-    //    //public class UpdateCommand
-    //    //{
-    //    //}
-    //}
 }
 
 #nullable restore

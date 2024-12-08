@@ -9,15 +9,18 @@ using Extensions;
 using Model;
 using RestApi.Extensions;
 
-public class ApiManager : IDisposable
+public partial class ApiManager : IDisposable
 {
     internal ApiClient ApiClient { get; }
     internal string Account { get; }
 
     public ApiManager(HttpConnection httpConnection)
     {
+        var verbose= httpConnection.Verbose;
         ApiClient = ApiClient.Create(httpConnection);
         Account = httpConnection.Account;
+        if (verbose)
+            WriteInfo($"Connecting using Account= {Account}, Token= ****");
     }
 
     #region Project API

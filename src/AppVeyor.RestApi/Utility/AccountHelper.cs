@@ -2,25 +2,36 @@
 
 namespace AppVeyor.Api.Utility;
 
+using Security;
+
 internal static class AccountHelper
 {
-    public static string GetToken()
+    //read the token from the environment variable or the Windows Credential Manager.
+    public static string? GetToken(string? account)
     {
+        //1) Check if the token is set in the environment variable.
         WriteLine("Reading 'Token' from Environment Variable.");
-        var token = Environment.GetEnvironmentVariable("APPVEYOR_TOKEN");
-        return token
-               ?? throw new AppveyorException(
-                   "Error Token Exception: Token is null or empty and APPVEYOR_TOKEN env isn't defined.");
+        var token = Env.GetToken();
+        if (!string.IsNullOrEmpty(token)) return token;
+
+        //2) If the token is not set in the environment variable,
+        //check if it is stored in the Windows Credential Manager.
+        if (string.IsNullOrEmpty(account)) return string.Empty;
+
+        WriteLine("Reading 'Token' from Windows Credential Manager.");
+        var cm = new CredentialManager();
+
+        if (cm.TryRetrieveToken(account, out token))
+            return token;
+
+        return null;
     }
 
-    public static string GetAccount(string? account)
+    //read the account from the environment variable.
+    public static string? GetAccount()
     {
-        if (!string.IsNullOrEmpty(account)) return account;
         WriteLine("Reading 'Account' from Environment Variable.");
-        account = Environment.GetEnvironmentVariable("APPVEYOR_ACCOUNT");
-
-        return account
-               ?? throw new AppveyorException(
-                   "Account Exception: Account is null or empty and APPVEYOR_ACCOUNT env isn't defined.");
+        var result = Env.GetAccount();
+        return result;
     }
 }

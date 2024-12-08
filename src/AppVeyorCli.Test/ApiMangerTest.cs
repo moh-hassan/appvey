@@ -6,6 +6,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Api;
 using Api.Collection;
+using Api.Utility;
 using Extensions;
 
 public class ApiMangerTest
@@ -17,7 +18,8 @@ public class ApiMangerTest
     [OneTimeSetUp]
     public void Setup()
     {
-        var httpConnection = new HttpConnection
+        //Read account from environment variable
+        var httpConnection = new HttpConnection(null, null)
         {
             Verbose = true
         };
@@ -38,7 +40,6 @@ public class ApiMangerTest
     {
         //Act
         var sut = await _apiManager.GetProjectsAsync(_ct);
-
         //Assert
         Assert.Multiple(() =>
         {

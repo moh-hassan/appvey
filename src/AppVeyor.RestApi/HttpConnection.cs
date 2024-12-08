@@ -12,14 +12,12 @@ public class HttpConnection
     public string? ProxyUser { get; set; }
     public bool Verbose { get; set; }
 
-    public HttpConnection() : this(null, null)
-    {
-    }
-
     public HttpConnection(string? account, string? token)
     {
-        Token = token ?? AccountHelper.GetToken();
-        Account = account ?? AccountHelper.GetAccount(Account);
+        Token = token ?? AccountHelper.GetToken(account)
+           ?? throw new AppveyorException("Error Token Exception: Token is null or empty or isn't stored in configuration."); ;
+        Account = account ?? AccountHelper.GetAccount()
+            ?? throw new AppveyorException("Account Exception: Account is null or empty.");
     }
 
     public void Deconstruct(out string? proxyAddress, out string? proxyUser)

@@ -46,7 +46,7 @@ public class CommandLineTest
         //Act
         var sut = await Program.Main(args);
         //Assert
-        AppVeyor.Cli.Program.ExecutionInfo.Should().BeEquivalentTo(expectedExecutionInfo);
+        Program.ExecutionInfo.Should().BeEquivalentTo(expectedExecutionInfo);
         sut.Should().Be(0);
     }
 

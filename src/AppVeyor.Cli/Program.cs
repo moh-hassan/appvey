@@ -18,8 +18,8 @@ public static class Program
         try
         {
             var bootstrapper = new Bootstrapper();
-            ExecutionInfo = bootstrapper.ExecutionInfo;
-            return await bootstrapper.StartAsync(args);
+            var result= await bootstrapper.StartAsync(args);
+            return result;
         }
         catch (OperationCanceledException)
         {
