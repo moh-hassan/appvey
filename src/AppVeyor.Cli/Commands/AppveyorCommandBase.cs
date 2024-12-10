@@ -35,7 +35,7 @@ public abstract class AppveyorCommandBase
         ValidationMessage = "Proxy server should be in the form http://proxy:port")]
     public string ProxyAddress { get; set; }
 
-    [CliOption(Required = false, Name = "-u", Aliases = ["--pu","--proxy-user"],
+    [CliOption(Required = false, Name = "-u", Aliases = ["--pu", "--proxy-user"],
         Description = "Proxy user/password should be in the form username:password", ValidationPattern = "^[^:]+:[^:]+$",
         ValidationMessage = "Proxy user/password should be in the form username:password")]
     public string ProxyUser { get; set; }
@@ -46,7 +46,7 @@ public abstract class AppveyorCommandBase
     [CliOption(Required = false, Description = "File to save screen output.")]
     public FileInfo Output { get; set; }
 
-    protected virtual ExecutionInfo ExecutionInfoCollector { get; set; }
+    //protected virtual ExecutionInfo ExecutionInfoCollector { get; set; }
 
     protected ApiManager GetApiManager()
     {
@@ -88,25 +88,20 @@ public abstract class AppveyorCommandBase
             WriteInfo("\nOutput response:");
         }
 
+        Request = result.Request;
         DisplayResponseResult(result);
         if (Save != null)
             result.SaveResponse(Save);
         if (Output != null)
             Logger.Save(Output);
         await PostCommandAsync(apiManager, result, ct);
+        //copy the execution info to the Program
+        Copy(Program.ExecutionInfo);
         return 0;
     }
 
     protected virtual Task PostCommandAsync(ApiManager apiManager, ResponseResult result, CancellationToken ct)
     {
-        ExecutionInfoCollector = new(Title, Tag)
-        {
-            Request = result.Request,
-        };
-        ExecutionInfo.Copy(ExecutionInfoCollector, Program.ExecutionInfo);
-#if DEBUG
-        ExecutionInfoCollector.Show(Verbose);
-#endif
         return Task.CompletedTask;
     }
 
@@ -139,5 +134,15 @@ public abstract class AppveyorCommandBase
         {
             throw new AppveyorException("Either job-id or build-version should be specified");
         }
+    }
+
+    public void Copy(ExecutionInfo target)
+    {
+        target.Title = Title;
+        target.Tag = Tag;
+        target.Request = Request;
+#if DEBUG
+        target.Show(Verbose);
+#endif
     }
 }

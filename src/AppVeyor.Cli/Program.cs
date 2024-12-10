@@ -11,7 +11,7 @@ using Commands;
 
 public static class Program
 {
-    public static ExecutionInfo ExecutionInfo { get; set; } = new();
+    public static ExecutionInfo? ExecutionInfo { get; set; } = new();
 
     public static async Task<int> Main(string[] args)
     {
