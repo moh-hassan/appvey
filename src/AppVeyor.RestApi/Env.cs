@@ -3,17 +3,60 @@
 namespace AppVeyor.Api;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-internal class Env
+internal class Env : IEnv
 {
-    private static string AppveyorTokenName = "APPVEYOR_TOKEN";
-    private static string AppveyorAccountName = "APPVEYOR_ACCOUNT";
+    private const string AppveyorTokenName = "APPVEYOR_TOKEN";
+    private const string AppveyorAccountName = "APPVEYOR_ACCOUNT";
 
-    // StoreEnv("APPVEYOR_ACCOUNT", Account)
-    public static void StoreEnv(string key, string? value)
+    public void StoreToken(string value)
+    {
+        StoreEnv(AppveyorTokenName, value);
+    }
+
+    public void StoreAccount(string? value)
+    {
+        StoreEnv(AppveyorAccountName, value);
+    }
+
+    public void StoreAccount(string account, string token)
+    {
+        StoreAccount(account);
+        StoreToken(token);
+    }
+
+    public string? GetToken()
+    {
+        return GetEnv(AppveyorTokenName);
+    }
+
+    public string? GetAccount()
+    {
+        var result = GetEnv(AppveyorAccountName);
+        return result;
+    }
+
+    public void Remove(string key)
+    {
+        Environment.SetEnvironmentVariable(key, null, EnvironmentVariableTarget.User);
+    }
+
+    public void RemoveAccount()
+    {
+        Remove(AppveyorAccountName);
+    }
+
+    public void RemoveToken()
+    {
+        Remove(AppveyorTokenName);
+    }
+
+    public void Clear()
+    {
+        //do nothing
+    }
+
+    private void StoreEnv(string key, string? value)
     {
         if (string.IsNullOrEmpty(key))
             throw new ArgumentNullException(nameof(key));
@@ -21,34 +64,83 @@ internal class Env
         Environment.SetEnvironmentVariable(key, value, EnvironmentVariableTarget.User);
     }
 
-    public static void StoreToken(string? value)
-    {
-        StoreEnv(AppveyorTokenName, value);
-    }
-
-    public static void StoreAccount(string? value)
-    {
-        StoreEnv(AppveyorAccountName, value);
-    }
-
-    public static string? GetToken()
-    {
-        return GetEnv(AppveyorTokenName);
-    }
-
-    public static string? GetAccount()
-    {
-        var result= GetEnv(AppveyorAccountName);
-        return result;
-    }
-
-    public static string? GetEnv(string key)
+    private string? GetEnv(string key)
     {
         return Environment.GetEnvironmentVariable(key, EnvironmentVariableTarget.User);
     }
 
-    public static void Remove(string key)
+    public override string ToString()
     {
-        Environment.SetEnvironmentVariable(key, null, EnvironmentVariableTarget.User);
+        return $"Env";
+    }
+}
+
+/// <summary>
+/// Dummy implementation of IEnv for testing
+/// </summary>
+internal class DummyEnv : IEnv
+{
+    private static Dictionary<string, string> _env = new();
+    private const string AppveyorTokenName = "APPVEYOR_TOKEN";
+    private const string AppveyorAccountName = "APPVEYOR_ACCOUNT";
+
+    public DummyEnv()
+    {
+#if DEBUG
+        Console.WriteLine("using dummy env");
+#endif
+    }
+
+    public void StoreToken(string value)
+    {
+        _env[AppveyorTokenName] = value;
+    }
+
+    public void StoreAccount(string value)
+    {
+        _env["APPVEYOR_ACCOUNT"] = value;
+    }
+
+    public void StoreAccount(string account, string token)
+    {
+        StoreAccount(account);
+        StoreToken(token);
+    }
+
+    public string? GetToken()
+    {
+        _env.TryGetValue(AppveyorTokenName, out var token);
+        return token;
+    }
+
+    public string? GetAccount()
+    {
+        _env.TryGetValue("APPVEYOR_ACCOUNT", out var account);
+        return account;
+    }
+
+    public void Remove(string key)
+    {
+        _env.Remove(key);
+    }
+
+    public void RemoveAccount()
+    {
+        Remove(AppveyorAccountName);
+    }
+
+    public void RemoveToken()
+    {
+        Remove(AppveyorTokenName);
+    }
+
+    public void Clear()
+    {
+        _env.Clear();
+    }
+
+    public override string ToString()
+    {
+        return $"account={_env["APPVEYOR_ACCOUNT"]} token= {_env["APPVEYOR_TOKEN"]}";
     }
 }
