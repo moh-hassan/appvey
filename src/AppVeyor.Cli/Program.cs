@@ -7,18 +7,19 @@ using System.Runtime.InteropServices;
 
 namespace AppVeyor.Cli;
 
-using Commands;
+using Api;
 
 public static class Program
 {
-    public static ExecutionInfo? ExecutionInfo { get; set; } = new();
-
     public static async Task<int> Main(string[] args)
     {
         try
         {
+            ServiceLocator.RegisterService<IEnv>(new Env());
             var bootstrapper = new Bootstrapper();
-            var result= await bootstrapper.StartAsync(args);
+            var result= await Bootstrapper
+                .StartAsync(args)
+                .ConfigureAwait(false);
             return result;
         }
         catch (OperationCanceledException)

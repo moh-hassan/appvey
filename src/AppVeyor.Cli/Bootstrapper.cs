@@ -2,13 +2,14 @@
 
 namespace AppVeyor.Cli;
 
+using Api;
 using Api.Utility;
 using Commands;
 using Cli = DotMake.CommandLine.Cli;
 
 public class Bootstrapper
-{
-    public async Task<int> StartAsync(string[] args)
+{   
+    public static async Task<int> StartAsync(string[] args)
     {
         var cancellationTokenSource = new CancellationTokenSource();
         // Hook into Ctrl+C event
