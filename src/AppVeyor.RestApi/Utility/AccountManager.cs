@@ -2,12 +2,28 @@
 
 namespace AppVeyor.Api.Utility;
 
+using System.Net;
 using Security;
 
-internal static class AccountHelper
+internal class AccountManager
 {
+    private IEnv Env { get; }
+
+    public AccountManager(IEnv env)
+    {
+        Env = env;
+    }
+
+    public NetworkCredential ToNetworkCredential(string? tok, string? acc)
+    {
+        var account = acc ?? GetAccount();
+        var token = tok ?? GetToken(account);
+        var cred = new NetworkCredential(account, token);
+        return cred;
+    }
+
     //read the token from the environment variable or the Windows Credential Manager.
-    public static string? GetToken(string? account)
+    private string GetToken(string? account)
     {
         //1) Check if the token is set in the environment variable.
         WriteLine("Reading 'Token' from Environment Variable.");
@@ -19,19 +35,19 @@ internal static class AccountHelper
         if (string.IsNullOrEmpty(account)) return string.Empty;
 
         WriteLine("Reading 'Token' from Windows Credential Manager.");
-        var cm = new CredentialManager();
+        var cm = new WindowsCredentialManager();
 
-        if (cm.TryRetrieveToken(account, out token))
+        if (cm.TryReadToken(account, out token))
             return token;
 
-        return null;
+        throw new AppveyorException("Error Token Exception: Token is null or empty or isn't stored in configuration.");
     }
 
     //read the account from the environment variable.
-    public static string? GetAccount()
+    private string GetAccount()
     {
         WriteLine("Reading 'Account' from Environment Variable.");
         var result = Env.GetAccount();
-        return result;
+        return result ?? throw new AppveyorException("Account Exception: Account is null or empty."); ;
     }
 }

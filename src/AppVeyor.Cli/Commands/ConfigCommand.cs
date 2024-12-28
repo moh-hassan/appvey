@@ -11,7 +11,7 @@ using Api.Security;
 [CliCommand(
     Description = "Configure Appveyor token and account and allow storing token to windows Credential Manager",
     Parent = typeof(AppveyorCommand))]
-public class Config
+public class ConfigCommand 
 {
     [CliOption(Required = false, Description = "Appveyor User account")]
     public virtual string Account { get; set; }
@@ -28,8 +28,12 @@ public class Config
         Description = "show/save configuration")]
     public string Action { get; set; }
 
+    private IEnv Env => ServiceLocator.GetService<IEnv>();
+
     public async Task<int> RunAsync(CliContext context)
     {
+        if (Env == null) throw new AppveyorException("Environment is not available.");
+
         var info = Action == "info";
         var save = Action == "save";
 
@@ -40,6 +44,7 @@ public class Config
             return await Task.FromResult(0);
         }
 
+        //set and save configuration
         if (string.IsNullOrEmpty(Token))
         {
             throw new AppveyorException("Option '--token' is required.");
@@ -51,8 +56,8 @@ public class Config
         }
         else
         {
-           Env.StoreToken(Token);
-           Env.StoreAccount(Account);
+            Env.StoreToken(Token);
+            Env.StoreAccount(Account);
         }
 
         WriteLine("Configuration is saved.");
@@ -62,7 +67,7 @@ public class Config
     private void StoreCred()
     {
         if (!UseCredential) return;
-        var cm = new CredentialManager();
+        var cm = new WindowsCredentialManager();
         var canStore = cm.TryStoreToken(Account, Token);
 
         WriteLine(canStore
@@ -79,7 +84,7 @@ public class Config
 
         if (Env.GetToken() is { } _) sb.AppendLine("Token is stored in Environment.");
 
-        if (CredentialManager.IsExists(Account))
+        if (WindowsCredentialManager.IsExists(Account))
             sb.AppendLine("Token is stored in Windows Credential Manager.");
         else
             sb.AppendLine($"Token for account: '{Account}' isn't stored in Windows Credential Manager.");

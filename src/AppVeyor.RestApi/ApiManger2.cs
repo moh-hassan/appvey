@@ -3,6 +3,7 @@
 namespace AppVeyor.Api;
 
 using System.Threading.Tasks;
+using AppVeyor.Api.Model;
 
 public partial class ApiManager
 {
@@ -10,31 +11,31 @@ public partial class ApiManager
 
     public async Task<ResponseResult> GetUsersAsync(CancellationToken ct = default)
     {
-        var apiUrl = GetUsersUrl(Account);
+        var apiUrl = $"{ApiUrl(Account)}/users";
         return await ApiClient.GetApiAsync(apiUrl, ct);
     }
 
     public async Task<ResponseResult> GetUserAsync(string userId, CancellationToken ct = default)
     {
-        var apiUrl = GetUserUrl(Account, userId);
+        var apiUrl = $"{ApiUrl(Account)}/users/{userId}";
         return await ApiClient.GetApiAsync(apiUrl, ct);
     }
 
     public async Task<ResponseResult> AddUserAsync(string json, CancellationToken ct = default)
     {
-        var apiUrl = PostUsersUrl(Account);
+        var apiUrl = $"{ApiUrl(Account)}/users";
         return await ApiClient.PostApiAsync(apiUrl, json, ct);
     }
 
     public async Task<ResponseResult> UpdateUserAsync(string json, CancellationToken ct = default)
     {
-        var apiUrl = PutUserUrl(Account);
+        var apiUrl = $"{ApiUrl(Account)}/users";
         return await ApiClient.PutApiAsync(apiUrl, json, ct);
     }
 
     public async Task<ResponseResult> DeleteUserAsync(string id, CancellationToken ct = default)
     {
-        var apiUrl = DelUserUrl(Account, id);
+        var apiUrl = $"{ApiUrl(Account)}/users/{id}";
         return await ApiClient.DeleteApiAsync(apiUrl, ct);
     }
 

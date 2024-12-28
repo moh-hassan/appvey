@@ -10,23 +10,17 @@ using AppVeyor.Api.Security;
 using Extensions;
 using FluentAssertions;
 
-//*********To run this test, set _use_cred = true *************
 public class ConfigTest
 {
-    private Bootstrapper bootstrapper;
-    private string? _account;
-    private string? _token;
     private bool _use_cred = false;
+    private IEnv _env;
 
     [OneTimeSetUp]
     public void Setup()
     {
-        if (!_use_cred) Assert.Ignore("Ignored.Set _use_cred =true");
-
-        bootstrapper = new Bootstrapper();
-        //store original environment if exists
-        _account = Env.GetAccount();
-        _token = Env.GetToken();
+        //use dummy environment
+        ServiceLocator.RegisterService<IEnv>(new DummyEnv());
+        _env = ServiceLocator.GetService<IEnv>();
     }
 
     [SetUp]
@@ -35,27 +29,40 @@ public class ConfigTest
         Logger.Clear();
     }
 
-    [OneTimeTearDown]
+    [TearDown]
     public void TearDown()
     {
-        //restore original environment
-        Env.StoreAccount(_account);
-        Env.StoreToken(_token);
+        _env.Clear();
     }
 
     [Test]
-    public async Task Should_Save_Configuration_To_Environment()
+    public async Task A1_Token_Save_To_Environment()
     {
         // Arrange
         var args = "config --account testAccount --token testToken --action save".SplitArgs();
 
         // Act
-        await bootstrapper.StartAsync(args);
+        await Bootstrapper.StartAsync(args);
 
         // Assert
-        Logger.Print();
-        Env.GetAccount().Should().Be("testAccount");
-        Env.GetToken().Should().Be("testToken");
+        _env.GetAccount().Should().Be("testAccount");
+        _env.GetToken().Should().Be("testToken");
+        Logger.Text.Should().Contain("Configuration is saved");
+    }
+
+    [Test]
+    public async Task A1_Token_Save_To_WindowsCredentialManager()
+    {
+        // Arrange
+        var args = "config --account testAccount --token testToken  --use-cred  --action save".SplitArgs();
+
+        // Act
+        await Bootstrapper.StartAsync(args);
+
+        // Assert
+        WindowsCredentialManager.IsExists("testAccount").Should().BeTrue();
+        Logger.Text.Should().Contain("Configuration is saved");
+        Logger.Text.Should().Contain("Token is stored in Windows Credential Manager successfully");
     }
 
     [Test]
@@ -65,7 +72,7 @@ public class ConfigTest
         var args = "config --account testAccount --action save".SplitArgs();
 
         // Act & Assert
-        var ex = Assert.ThrowsAsync<AppveyorException>(async () => await bootstrapper.StartAsync(args));
+        var ex = Assert.ThrowsAsync<AppveyorException>(async () => await Bootstrapper.StartAsync(args));
         ex.Message.Should().Contain("Option '--token' is required.");
     }
 
@@ -76,23 +83,9 @@ public class ConfigTest
         var args = "config --account testAccount --action info".SplitArgs();
 
         // Act
-        var result = await bootstrapper.StartAsync(args);
-        Console.WriteLine($"++log: [{Logger.Text}]");
+        var result = await Bootstrapper.StartAsync(args);
         // Assert
         result.Should().Be(0);
         Logger.Text.Should().Contain("Configuration Info:");
-    }
-
-    [Test]
-    public async Task Store_token_in_credential_manager()
-    {
-        // Arrange
-        var args = $"config --account testAccount --token testToken --action save --use-cred".SplitArgs();
-
-        // Act
-        await bootstrapper.StartAsync(args);
-
-        // Assert
-        CredentialManager.IsExists("testAccount").Should().BeTrue();
     }
 }
