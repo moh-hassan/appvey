@@ -46,18 +46,7 @@ public abstract class AppveyorCommandBase
     [CliOption(Required = false, Description = "File to save screen output.")]
     public FileInfo Output { get; set; }
 
-    //protected virtual ExecutionInfo ExecutionInfoCollector { get; set; }
-
-    protected ApiManager GetApiManager()
-    {
-        var httpConnection = new HttpConnection(Account, Token)
-        {
-            ProxyAddress = ProxyAddress,
-            ProxyUser = ProxyUser,
-            Verbose = Verbose
-        };
-        return new(httpConnection);
-    }
+    private IEnv Env => ServiceLocator.GetService<IEnv>();
 
     protected virtual Task<ResponseResult> RunApiAsync(ApiManager apiManager, CancellationToken ct)
     {
@@ -73,6 +62,7 @@ public abstract class AppveyorCommandBase
 
     public virtual async Task<int> RunAsync(CliContext context)
     {
+        ExecutionInfo.Clear();
         Token = InputHelper.ProcessToken(Token);
         var ct = context.CancellationToken;
         using var apiManager = GetApiManager();
@@ -95,8 +85,7 @@ public abstract class AppveyorCommandBase
         if (Output != null)
             Logger.Save(Output);
         await PostCommandAsync(apiManager, result, ct);
-        //copy the execution info to the Program
-        Copy(Program.ExecutionInfo);
+        SetExecutionInfo();
         return 0;
     }
 
@@ -136,13 +125,20 @@ public abstract class AppveyorCommandBase
         }
     }
 
-    public void Copy(ExecutionInfo target)
+    private ApiManager GetApiManager()
     {
-        target.Title = Title;
-        target.Tag = Tag;
-        target.Request = Request;
+        var httpConnection = HttpConnection
+            .Create(Env, Account, Token, ProxyAddress, ProxyUser, Verbose);
+        return new ApiManager(httpConnection);
+    }
+
+    private void SetExecutionInfo()
+    {
+        ExecutionInfo.Title = Title;
+        ExecutionInfo.Tag = Tag;
+        ExecutionInfo.Request = Request;
 #if DEBUG
-        target.Show(Verbose);
+        ExecutionInfo.Show(Verbose);
 #endif
     }
 }

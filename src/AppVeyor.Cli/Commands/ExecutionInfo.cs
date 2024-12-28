@@ -1,16 +1,23 @@
 ﻿// Copyright (c) Mohamed Hassan. All rights reserved. See License.md in the project root for license information.
 
 namespace AppVeyor.Cli.Commands;
-#nullable disable
+
 using System.Text;
 
-public class ExecutionInfo
+public static class ExecutionInfo
 {
-    public string Title { get; set; }
-    public string Tag { get; set; }
-    public string Request { get; set; }
+    public static string? Title { get; set; }
+    public static string? Tag { get; set; }
+    public static string? Request { get; set; }
 
-    public StringBuilder Show(bool verbose)
+    public static void Clear()
+    {
+        Title = null;
+        Tag = null;
+        Request = null;
+    }
+
+    public static StringBuilder Show(bool verbose)
     {
         if (!verbose) return new StringBuilder();
         var sb = new StringBuilder();
@@ -23,4 +30,3 @@ public class ExecutionInfo
         return sb;
     }
 }
-#nullable restore
