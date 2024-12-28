@@ -25,7 +25,7 @@ internal class JsonExtensionTest
         var result = json?.ToObject<object>();
 
         // Assert
-        Assert.That(result, Is.EqualTo(default));
+         Assert.That(result, Is.EqualTo(default(object)));
     }
 
     [Test]
