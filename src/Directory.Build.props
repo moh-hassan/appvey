@@ -18,7 +18,7 @@
     <PackageReleaseNotes>https://github.com/moh-hassan/appvey/ReleaseNotes.md </PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <IncludeSourceRevisionInInformationalVersion>true</IncludeSourceRevisionInInformationalVersion>
-    <PackageTags>appveyor;appvey;rest;api;http;https;wiremock</PackageTags>
+    <PackageTags>appveyor;appvey;restapi;https;commandline;csharp;ci/cd;automation;devops;continuousintegration;appveyorapi</PackageTags>
     <DefineConstants>$(DefineConstants);DEVELOP</DefineConstants>
     <NoWarn>$(NoWarn);CS3009;NU1701</NoWarn>
     <NuGetAuditMode>direct</NuGetAuditMode>
