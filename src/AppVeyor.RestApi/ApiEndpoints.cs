@@ -7,6 +7,7 @@ public static class ApiEndpoints
     public const string AppVeyorBaseApi = "https://ci.appveyor.com";
     public const string MockBaseApi = "http://localhost:5001/";
 
+    //Manage the base url for the api by checking the environment variable DEVELOP
     public static string GetBaseUrl()
     {
         var develop = Environment.GetEnvironmentVariable("DEVELOP") ?? "0";
@@ -18,7 +19,7 @@ public static class ApiEndpoints
         return AppVeyorBaseApi;
     }
 
-    public static string Api(string accountName)
+    public static string ApiUrl(string accountName)
             => $"/api/account/{accountName}";
 
     public static string GetBuildPageUrl(string account, string projectSlug, object buildId)
@@ -60,10 +61,10 @@ public static class ApiEndpoints
         => $"/api/projects/{accountName}/{projectSlug}/settings/environment-variables";
 
     public static string PostAddProjectUrl(string accountName)
-       => $"{Api(accountName)}/projects";
+       => $"{ApiUrl(accountName)}/projects";
 
     public static string PutUpdateProjectUrl(string accountName)
-        => $"{Api(accountName)}/projects";
+        => $"{ApiUrl(accountName)}/projects";
 
     public static string PutUpdateProjectSettingsInYamlUrl(string accountName, string projectSlug)
         => $"/api/projects/{accountName}/{projectSlug}/settings/yaml";
@@ -88,7 +89,7 @@ public static class ApiEndpoints
         => $"/api/account/{accountName}/builds";
 
     public static string PostStartBuildPrUrl(string accountName)
-        => $"{Api(accountName)}/builds";
+        => $"{ApiUrl(accountName)}/builds";
 
     public static string CancelBuildUrl(string accountName, string projectSlug, string buildVersion)
         => $"/api/builds/{accountName}/{projectSlug}/{buildVersion}";
@@ -118,10 +119,10 @@ public static class ApiEndpoints
 
     //-----------------------------Teams api----------------------
     public static string GetUsersUrl(string accountName)
-       => $"{Api(accountName)}/users";
+       => $"{ApiUrl(accountName)}/users";
 
     public static string GetUserUrl(string accountName, string userId)
-        => $"{Api(accountName)}/users/{userId}";
+        => $"{ApiUrl(accountName)}/users/{userId}";
 
     public static string PostUsersUrl(string accountName) => GetUsersUrl(accountName);
 
@@ -130,10 +131,10 @@ public static class ApiEndpoints
     public static string DelUserUrl(string accountName, string userId) => GetUserUrl(accountName, userId);
 
     public static string GetCollaboratorsUrl(string accountName)
-        => $"{Api(accountName)}/collaborators";
+        => $"{ApiUrl(accountName)}/collaborators";
 
     public static string GetCollaboratorUrl(string accountName, string userId)
-        => $"{Api(accountName)}/collaborators/{userId}";
+        => $"{ApiUrl(accountName)}/collaborators/{userId}";
 
     public static string PostCollaboratorsUrl(string accountName) => GetCollaboratorsUrl(accountName);
 
@@ -143,18 +144,18 @@ public static class ApiEndpoints
         => GetCollaboratorUrl(accountName, userId);
 
     public static string GetRolesUrl(string accountName)
-        => $"{Api(accountName)}/roles";
+        => $"{ApiUrl(accountName)}/roles";
 
     public static string GetRoleUrl(string accountName, string roleId)
-        => $"{Api(accountName)}/roles/{roleId}";
+        => $"{ApiUrl(accountName)}/roles/{roleId}";
 
     public static string PostRoleUrl(string accountName)
-        => $"{Api(accountName)}/roles";
+        => $"{ApiUrl(accountName)}/roles";
 
     public static string PutRoleUrl(string accountName) => PostRoleUrl(accountName);
 
     public static string DelRoleUrl(string accountName, string roleId)
-        => $"{Api(accountName)}/roles/{roleId}";
+        => $"{ApiUrl(accountName)}/roles/{roleId}";
 
     public static string GetBaseUrl(string develop)
         => develop == "1" ? MockBaseApi : AppVeyorBaseApi;

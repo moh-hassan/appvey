@@ -16,10 +16,9 @@ public partial class ApiManager : IDisposable
 
     public ApiManager(HttpConnection httpConnection)
     {
-        var verbose= httpConnection.Verbose;
         ApiClient = ApiClient.Create(httpConnection);
-        Account = httpConnection.Account;
-        if (verbose)
+        Account = httpConnection.AccountCredential.UserName;
+        if (httpConnection.Verbose)
             WriteInfo($"Connecting using Account= {Account}, Token= ****");
     }
 

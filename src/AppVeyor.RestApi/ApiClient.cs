@@ -10,7 +10,6 @@ namespace AppVeyor.Api;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using RestApi.Extensions;
 using Utility;
 
 internal partial class ApiClient : IDisposable
@@ -49,52 +48,52 @@ internal partial class ApiClient : IDisposable
         }
 
         //clear cache
-        Client.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
-        SetupBearer(httpConnection.Token);
-        var (proxyAddress, proxyUser) = httpConnection;
-        ConfigureProxy(proxyAddress, proxyUser);
+        Client.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue
+        {
+            NoCache = true
+        };
+        // SetupBearer();
+        Client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", httpConnection.AccountCredential.Password);
+        ConfigureProxy(httpConnection);
         Client.DefaultRequestHeaders.Accept.Clear();
         Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/plain"));
+        SetupAgent();
+        Verbose = httpConnection.Verbose;
+        if (Verbose)
+        {
+            WriteInfo($"Success Connection");
+        }
+    }
 
+    private void SetupAgent()
+    {
         var version = new AppVersionInfo().VersionWithNoCommit;
         var productValue = new ProductInfoHeaderValue("appvey", version);
         var commentValue = new ProductInfoHeaderValue("(+https://github.com/moh-hassan/appvey)");
-
         Client.DefaultRequestHeaders.UserAgent.Add(productValue);
         Client.DefaultRequestHeaders.UserAgent.Add(commentValue);
-        Verbose = httpConnection.Verbose;
     }
 
-    private void SetupBearer(string token)
+    private void ConfigureProxy(HttpConnection httpConnection)
     {
-        if (string.IsNullOrEmpty(token))
-            WriteWarning("Token is null. Skipping Authentication setup.");
-        Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-    }
-
-    private void ConfigureProxy(string? proxyAddress, string? proxyUser)
-    {
+        var proxyAddress = httpConnection.ProxyAddress;
         if (string.IsNullOrEmpty(proxyAddress))
         {
             ClientHandler.DefaultProxyCredentials = CredentialCache.DefaultCredentials;
+            ClientHandler.Proxy = WebRequest.GetSystemWebProxy();
             return;
         }
 
-        WriteInfo($"Connecting to proxy: {proxyAddress}");
-        var webProxy = new WebProxy(proxyAddress);
-
-        if (!string.IsNullOrEmpty(proxyUser))
+        var webProxy = new WebProxy(proxyAddress)
         {
-            webProxy.UseDefaultCredentials = false;
-            var (user, password) = proxyUser.SplitString();
-            webProxy.Credentials = new NetworkCredential(user, password);
-            ClientHandler.Proxy = webProxy;
-        }
-        else
-        {
-            webProxy.UseDefaultCredentials = true;
-        }
+            UseDefaultCredentials = false,
+            Credentials = httpConnection.ProxyCredential,
+        };
+       
+        ClientHandler.Proxy = webProxy;
+        WriteInfo($"Connection is using proxy Server: '{proxyAddress}' with user: '{httpConnection.ProxyCredential.UserName}'");
     }
 
     private void Dispose(bool disposing)

@@ -14,15 +14,12 @@ public class ApiMangerTest
     private ApiClient _apiClient;
     private ApiManager _apiManager;
     private CancellationToken _ct = default;
+    private IEnv _env = new DummyEnv();
 
     [OneTimeSetUp]
     public void Setup()
     {
-        //Read account from environment variable
-        var httpConnection = new HttpConnection(null, null)
-        {
-            Verbose = true
-        };
+        var httpConnection = HttpConnection.Create(_env, "moh-hassan", "secret", verbose: true);
         _apiClient = ApiClient.Create(httpConnection);
         _apiManager = new ApiManager(httpConnection);
     }
@@ -34,7 +31,6 @@ public class ApiMangerTest
         _apiManager.Dispose();
     }
 
-    //-----------------------apiManager-------------------
     [Test]
     public async Task Get_projects_test()
     {

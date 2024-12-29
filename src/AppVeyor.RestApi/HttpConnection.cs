@@ -2,27 +2,53 @@
 
 namespace AppVeyor.Api;
 
+using System.Net;
 using Utility;
+using RestApi.Extensions;
 
-public class HttpConnection
+public sealed class HttpConnection
 {
-    public string Token { get; }
-    public string Account { get; }
+    public NetworkCredential AccountCredential { get; set; } = null!;
+    public NetworkCredential ProxyCredential { get; set; }
     public string? ProxyAddress { get; set; }
-    public string? ProxyUser { get; set; }
-    public bool Verbose { get; set; }
 
-    public HttpConnection(string? account, string? token)
+    public bool Verbose { get; set; }
+    private AccountManager AccountManager { get; }
+
+    private HttpConnection(IEnv env)
     {
-        Token = token ?? AccountHelper.GetToken(account)
-           ?? throw new AppveyorException("Error Token Exception: Token is null or empty or isn't stored in configuration."); ;
-        Account = account ?? AccountHelper.GetAccount()
-            ?? throw new AppveyorException("Account Exception: Account is null or empty.");
+        AccountManager = new AccountManager(env);
+        ProxyCredential = new NetworkCredential();
     }
 
-    public void Deconstruct(out string? proxyAddress, out string? proxyUser)
+    public static HttpConnection Create(IEnv env,
+        string? account = null,
+        string? token = null,
+        string? proxyAddress = null, string? proxyUser = null, bool verbose = false)
     {
-        proxyAddress = ProxyAddress;
-        proxyUser = ProxyUser;
+        var connection = new HttpConnection(env)
+         .Initialize(account, token, proxyAddress, proxyUser, verbose);
+        return connection;
+    }
+
+    private HttpConnection Initialize(
+        string? account = null,
+        string? token = null,
+        string? proxyAddress = null,
+        string? proxyUser = null, //format-> username:password
+        bool verbose = false)
+    {
+        AccountCredential = AccountManager.ToNetworkCredential(token, account);
+
+        ProxyAddress = proxyAddress;
+        if (!string.IsNullOrEmpty(proxyUser))
+        {
+            var (user, password) = proxyUser.SplitString();
+            ProxyCredential = new NetworkCredential(user, password);
+        }
+
+        Verbose = verbose;
+        WriteLine($"Configured HTTP connection with Account: {AccountCredential.UserName} {account}");
+        return this;
     }
 }
