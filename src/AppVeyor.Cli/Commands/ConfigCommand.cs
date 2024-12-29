@@ -11,9 +11,9 @@ using Api.Security;
 [CliCommand(
     Description = "Configure Appveyor token and account and allow storing token to windows Credential Manager",
     Parent = typeof(AppveyorCommand))]
-public class ConfigCommand 
+public class ConfigCommand
 {
-    [CliOption(Required = false, Description = "Appveyor User account")]
+    [CliOption(Required = true, Description = "Appveyor User account")]
     public virtual string Account { get; set; }
 
     [CliOption(Required = false, Description = "Appveyor token v2")]
@@ -24,8 +24,8 @@ public class ConfigCommand
         Description = "Store token in Windows Credential Manager (Windows only).")]
     public bool UseCredential { get; set; }
 
-    [CliOption(Required = true, AllowedValues = ["save", "info"],
-        Description = "show/save configuration")]
+    [CliOption(Required = true, AllowedValues = ["save", "remove", "info"],
+        Description = "show/save/remove configuration")]
     public string Action { get; set; }
 
     private IEnv Env => ServiceLocator.GetService<IEnv>();
@@ -34,33 +34,66 @@ public class ConfigCommand
     {
         if (Env == null) throw new AppveyorException("Environment is not available.");
 
-        var info = Action == "info";
-        var save = Action == "save";
-
-        if (info)
+        switch (Action)
         {
-            var result = GetInfo();
-            WriteLine(result.ToString());
+            case "save":
+                if (string.IsNullOrEmpty(Token))
+                    throw new AppveyorException("Option '--token' is required.");
+                if (UseCredential)
+                {
+                    StoreCred();
+                }
+                else
+                {
+                    Env.StoreToken(Token);
+                    Env.StoreAccount(Account);
+                }
+
+                WriteLine("Configuration is saved.");
+                return await Task.FromResult(0);
+
+            case "remove":
+                return await RemoveConfigurationAsync();
+
+            case "info":
+                var result = GetInfo();
+                WriteLine(result.ToString());
+                return await Task.FromResult(0);
+
+            default:
+                throw new AppveyorException("Invalid Configuration action.");
+        }
+    }
+
+    private async Task<int> RemoveConfigurationAsync()
+    {
+        if (!Confirm())
+        {
+            WriteLine("Configuration is not removed.");
             return await Task.FromResult(0);
         }
 
-        //set and save configuration
-        if (string.IsNullOrEmpty(Token))
-        {
-            throw new AppveyorException("Option '--token' is required.");
-        }
+        //remove configuration from environment
 
-        if (UseCredential)
+        if (!Env.IsExists(Account))
         {
-            StoreCred();
+            WriteLine($"Account '{Account}' is not stored in Environment.");
         }
         else
         {
-            Env.StoreToken(Token);
-            Env.StoreAccount(Account);
+            WriteInfo($"Removing account '{Account}' from Environment.");
+            Env.RemoveAccount();
+            WriteInfo("Removing token from Environment.");
+            Env.RemoveToken();
         }
 
-        WriteLine("Configuration is saved.");
+        //remove configuration from credential manager
+        var cm = new WindowsCredentialManager();
+        var result = cm.TryDeleteToken(Account);
+        if (result)
+            WriteInfo("Token is removed from Windows Credential Manager.");
+        else
+            WriteLine("Token is not found in Windows Credential Manager.");
         return await Task.FromResult(0);
     }
 
@@ -80,9 +113,14 @@ public class ConfigCommand
         var sb = new StringBuilder();
         sb.AppendLine("Configuration Info:");
 
-        if (Env.GetAccount() is { } account) sb.AppendLine($"Account '{account}' is stored in Environment APPVEYOR_ACCOUNT");
+        if (Env.IsExists(Account))
+        {
+            sb.AppendLine($"Account '{Account}' is stored in Environment APPVEYOR_ACCOUNT");
+            if (Env.GetToken() is { } _) sb.AppendLine("Token is stored in Environment.");
+        }
+        else
+            sb.AppendLine($"Account '{Account}' isn't stored in Environment.");
 
-        if (Env.GetToken() is { } _) sb.AppendLine("Token is stored in Environment.");
 
         if (WindowsCredentialManager.IsExists(Account))
             sb.AppendLine("Token is stored in Windows Credential Manager.");
@@ -91,5 +129,14 @@ public class ConfigCommand
 
         return sb;
     }
+    private bool Confirm()
+    {
+        Console.Write($"Are you sure to remove account: '{Account}'? (y/n) ");
+        var key = Console.Read();
+        var answer = key is 'y' or 'Y';
+        Console.WriteLine();
+        return answer;
+    }
+
 }
 #nullable restore

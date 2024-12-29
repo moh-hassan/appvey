@@ -6,11 +6,12 @@ public interface IEnv
 {
     void StoreToken(string value);
     void StoreAccount(string value);
-    void StoreAccount(string account,string token);
+    void StoreAccount(string account, string token);
     string? GetToken();
     string? GetAccount();
     void Remove(string key);
     void RemoveAccount();
     void RemoveToken();
     void Clear();
+    bool IsExists(string account);
 }

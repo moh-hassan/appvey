@@ -73,6 +73,11 @@ internal class Env : IEnv
     {
         return $"Env";
     }
+
+    public bool IsExists(string account)
+    {
+        return GetAccount() == account;
+    }
 }
 
 /// <summary>
@@ -142,5 +147,10 @@ internal class DummyEnv : IEnv
     public override string ToString()
     {
         return $"account={_env["APPVEYOR_ACCOUNT"]} token= {_env["APPVEYOR_TOKEN"]}";
+    }
+
+    public bool IsExists(string account)
+    {
+        return GetAccount() == account;
     }
 }

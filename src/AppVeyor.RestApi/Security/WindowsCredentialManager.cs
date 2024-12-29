@@ -24,7 +24,7 @@ internal class WindowsCredentialManager
             throw new ArgumentNullException(nameof(token));
         var target = CreateTargetName(account);
         CredentialManager.WriteCredential(target, account, token, CredentialPersistence.LocalMachine);
-        return true;            
+        return true;
     }
 
     public bool TryReadToken(string account, [NotNullWhen(true)] out string? token)
@@ -39,10 +39,16 @@ internal class WindowsCredentialManager
         return true;
     }
 
-    public void DeleteToken(string account)
+    public bool TryDeleteToken(string account)
     {
         var target = CreateTargetName(account);
+        if (!IsExists(account))
+        {
+            WriteLine($"Account '{account}' is not found in Credential Manager.");
+            return false;
+        }
         CredentialManager.DeleteCredential(target, CredentialType.Generic);
+        return true;
     }
 
     public static bool IsExists(string account)

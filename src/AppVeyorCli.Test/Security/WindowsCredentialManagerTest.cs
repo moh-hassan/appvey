@@ -153,7 +153,7 @@ public class WindowsCredentialManagerTest
         var token = "test-token3";
         // Act
         cm.TryStoreToken(account, token);
-        cm.DeleteToken(account);
+        cm.TryDeleteToken(account);
         var result = WindowsCredentialManager.IsExists(account);
         // Assert
         Assert.That(result, Is.False);
