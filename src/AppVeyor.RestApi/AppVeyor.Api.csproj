@@ -9,10 +9,8 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" />
-    <PackageReference Include="CredentialManagement"/>
-    <PackageReference Include="System.Security.Permissions"/>
+    <PackageReference Include="Meziantou.Framework.Win32.CredentialManager" />
   </ItemGroup>
- 
   <ItemGroup>
     <InternalsVisibleTo Include="Appvey" />
     <InternalsVisibleTo Include="AppVeyor.Test" />

@@ -17,14 +17,10 @@ public static class StringExt
 
     public static (string key, string value) SplitString(this string twoParts, char separator = ':')
     {
-        var pattern = @$"([a-zA-Z]+) \s*\{separator}\s*  (?:""([^""]*)""|([^""]+))";
-        var match = Regex.Match(twoParts, pattern, RegexOptions.IgnorePatternWhitespace);
-
-        if (!match.Success) return (twoParts, "");
-
-        var part1 = match.Groups[1].Value;
-        var part2 = match.Groups[2].Success ? match.Groups[2].Value : match.Groups[3].Value;
-        return (part1, part2);
+        if (string.IsNullOrEmpty(twoParts))
+            return (string.Empty, string.Empty);
+        var parts = twoParts.Split(separator);
+        return parts.Length == 1 ? (parts[0], "") : (parts[0], parts[1]);
     }
 
     public static string? FullException(this Exception ex)
