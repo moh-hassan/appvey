@@ -7,6 +7,7 @@
 - Add Users command.
 - Add http command.
 - Support Windows Credential Manager.
+- Sign packages by signpath sign-release certificate.
 
 ## Version 1.0.0
 **Release Date:**  2024-08-26

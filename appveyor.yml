@@ -8,12 +8,9 @@ pull_requests:
 
 # Set the signing policy slug according to branch
 environment:
-  SIGNPATH_SIGNING_POLICY_SLUG: test-signing
+  SIGNPATH_SIGNING_POLICY_SLUG: release-signing
   ARTIFACT_CONFIGURATION_SLUG: appvey
-  SIGNPATH_PROJECT_SLUG : odata2poco
-  
-install:  
-  - ps: dotnet --version
+  SIGNPATH_PROJECT_SLUG : appvey
   
 init:
   - ps: |
@@ -38,6 +35,7 @@ init:
   - ps: |
       Write-Host "APPVEYOR_BUILD_VERSION='$env:APPVEYOR_BUILD_VERSION'" -ForegroundColor Yellow
       Write-Host "APPVEYOR_REPO_TAG_NAME= '$env:APPVEYOR_REPO_TAG_NAME'" -ForegroundColor Yellow
+  - ps: dotnet --version
 
 configuration: Release
 
@@ -69,23 +67,10 @@ deploy:
   auth_token: $(GH_TOKEN)       
   prerelease: false  
   on:
-    APPVEYOR_REPO_TAG: true
-
-#nuget.org
-- provider: NuGet
-  api_key: $(NUGET_KEY)    
-  on:
-    APPVEYOR_REPO_TAG: true 
-    branch: main          
-    
-# myget
-- provider: NuGet
-  server: https://www.myget.org/F/appvey/api/v2/package
-  api_key: $(MYGET_KEY)
-      
+    APPVEYOR_REPO_TAG: true  
  
-# - provider: Webhook
-#   url: https://app.signpath.io/API/v1/%SIGNPATH_ORGANIZATION_ID%/Integrations/AppVeyor?ProjectSlug=%SIGNPATH_PROJECT_SLUG%&SigningPolicySlug=%SIGNPATH_SIGNING_POLICY_SLUG%&ArtifactConfigurationSlug=%ARTIFACT_CONFIGURATION_SLUG%
-#   authorization: 'Bearer %SIGNPATH_CI_USER_TOKEN%'  
+- provider: Webhook
+  url: https://app.signpath.io/API/v1/%SIGNPATH_ORGANIZATION_ID%/Integrations/AppVeyor?ProjectSlug=%SIGNPATH_PROJECT_SLUG%&SigningPolicySlug=%SIGNPATH_SIGNING_POLICY_SLUG%&ArtifactConfigurationSlug=%ARTIFACT_CONFIGURATION_SLUG%
+  authorization: 'Bearer %SIGNPATH_CI_USER_TOKEN%'  
   
   
