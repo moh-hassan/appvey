@@ -20,7 +20,8 @@ public class Cancel : AppveyorCommandBase
     protected override async Task<ResponseResult> RunApiAsync(ApiManager apiManager, CancellationToken ct)
     {
         if (apiManager == null) throw new ArgumentNullException(nameof(apiManager));
-        var result = await apiManager.CancelBuildAsync(Slug, BuildVersion, ct);
+        var result = await apiManager
+            .CancelBuildAsync(Slug, BuildVersion, WhatIf, ct);
         return result;
     }
 }

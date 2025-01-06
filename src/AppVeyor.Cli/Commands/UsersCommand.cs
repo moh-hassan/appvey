@@ -13,6 +13,8 @@ public partial class AppveyorCommand
         [CliCommand(Description = "List all Users")]
         public class List : AppveyorCommandBase
         {
+            protected override string Title => "List all Users ...";
+            protected override string Tag => "users list";
             protected override async Task<ResponseResult> RunApiAsync(ApiManager apiManager, CancellationToken ct)
             {
                 var result = await apiManager.GetUsersAsync(ct);
@@ -24,6 +26,9 @@ public partial class AppveyorCommand
         [CliCommand(Description = "Get user by UserId")]
         public class Get : AppveyorCommandBase
         {
+            protected override string Title => "Get user by UserId ...";
+            protected override string Tag => "users get";
+
             [CliArgument(Description = "User Id")]
             public string Id { get; set; }
 
@@ -37,6 +42,9 @@ public partial class AppveyorCommand
         [CliCommand(Description = "Add user")]
         public class Add : AppveyorCommandBase
         {
+            protected override string Title => "Add user ...";
+            protected override string Tag => "users add";
+
             [CliArgument(Description = "FullPath of json file")]
             public FileInfo JsonFile { get; set; }
 
@@ -53,6 +61,8 @@ public partial class AppveyorCommand
         [CliCommand(Description = "Update user")]
         public class Update : AppveyorCommandBase
         {
+            protected override string Title => "Update user ...";
+            protected override string Tag => "users update";
             [CliArgument(Description = "FullPath or relative of the json file")]
             public FileInfo JsonFile { get; set; }
 
@@ -68,6 +78,8 @@ public partial class AppveyorCommand
         [CliCommand(Description = "Delete user", Aliases = ["del"])]
         public class Delete : AppveyorCommandBase
         {
+            protected override string Title => "Delete user ...";
+            protected override string Tag => "users delete";
             [CliArgument] public string Id { get; set; }
 
             protected override async Task<ResponseResult> RunApiAsync(ApiManager apiManager, CancellationToken ct)

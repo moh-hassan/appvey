@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AppVeyor.Api;
-
+#nullable disable
 public partial class AppveyorCommand
 {
     [CliCommand(Description = "Run Appveyor Rest Api")]
@@ -16,8 +16,8 @@ public partial class AppveyorCommand
         protected override string Title => "Run Appveyor Rest Api ...";
         protected override string Tag => "http";
 
-        [CliOption(Description = "Http method. Allowed values: [get, post, put, delete] but Case insensitive", ValidationPattern = "^(?i)(get|put|post|delete)$")]
-        public string Method { get; set; } = "get";
+        [CliOption(Description = "Http method but Case insensitive", ValidationPattern = "^(?i)(get|put|post|delete)$")]
+        public HttpRequest Method { get; set; } = HttpRequest.Get;
 
         [CliOption(Description = "json file name (without @ prefix)", Required = false, AllowMultipleArgumentsPerToken = true)]
         public FileInfo Json { get; set; }
@@ -34,9 +34,11 @@ public partial class AppveyorCommand
 
             var result = Json == null
                 ? await apiManager.RunHttpApiAsync(Url, Method, ct: ct).ConfigureAwait(false)
-                : await apiManager.RunHttpApiAsync(Url, Method, jsonString, ct).ConfigureAwait(false);
+                : await apiManager
+                   .RunHttpApiAsync(Url, Method, jsonString, WhatIf, ct).ConfigureAwait(false);
 
             return result;
         }
     }
 }
+#nullable restore

@@ -19,7 +19,8 @@ public class GetSetting : AppveyorCommandBase
     {
         if (apiManager == null) throw new ArgumentNullException(nameof(apiManager));
 
-        var result = await apiManager.GetProjectSettingsAsync(Slug, ct).ConfigureAwait(false);
+        var result = await apiManager
+            .GetProjectSettingsAsync(Slug, WhatIf, ct).ConfigureAwait(false);
         return result;
     }
 }

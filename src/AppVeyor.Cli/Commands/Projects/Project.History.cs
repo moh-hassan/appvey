@@ -34,7 +34,7 @@ public class History : AppveyorCommandBase
     protected override async Task<ResponseResult> RunApiAsync(ApiManager apiManager, CancellationToken ct)
     {
         var result = await apiManager
-            .GetProjectHistoryAsync(Slug, Branch, RecordsNumber, StartBuildId, ct)
+            .GetProjectHistoryAsync(Slug, Branch, RecordsNumber, StartBuildId, WhatIf, ct)
             .ConfigureAwait(false);
         return result;
     }
@@ -44,7 +44,7 @@ public class History : AppveyorCommandBase
         var confirm = Confirm("Delete both failed and cancelled builds.");
         if (!confirm) return;
         var buildIds = FilterBuildIds(result);
-        _ = await apiManager.DeleteBuildsAsync(buildIds, ct).ConfigureAwait(false);
+        _ = await apiManager.DeleteBuildsAsync(buildIds, WhatIf, ct).ConfigureAwait(false);
     }
 
     private List<string> FilterBuildIds(ResponseResult result)

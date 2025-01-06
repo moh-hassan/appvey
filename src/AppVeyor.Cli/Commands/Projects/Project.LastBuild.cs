@@ -22,7 +22,8 @@ public class LastBuild : AppveyorCommandBase
     protected override async Task<ResponseResult> RunApiAsync(ApiManager apiManager, CancellationToken ct)
     {
         if (apiManager == null) throw new ArgumentNullException(nameof(apiManager));
-        var rr = await apiManager.GetProjectLastBranchBuildAsync(Slug, Branch, ct);
+        var rr = await apiManager
+            .GetProjectLastBranchBuildAsync(Slug, Branch, WhatIf, ct);
         return rr;
     }
 

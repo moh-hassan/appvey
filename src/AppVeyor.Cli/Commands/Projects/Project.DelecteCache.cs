@@ -18,7 +18,7 @@ public class DeleteCache : AppveyorCommandBase
     protected override async Task<ResponseResult> RunApiAsync(ApiManager apiManager, CancellationToken ct)
     {
         if (apiManager is null) throw new ArgumentNullException(nameof(apiManager));
-        var result = await apiManager.DeleteProjectBuildCacheAsync(Slug, ct);
+        var result = await apiManager.DeleteProjectBuildCacheAsync(Slug, WhatIf, ct);
         return result;
     }
 }

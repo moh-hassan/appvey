@@ -20,7 +20,7 @@ public class SlugCommand : AppveyorCommandBase
     protected override async Task<ResponseResult> RunApiAsync(ApiManager apiManager, CancellationToken ct)
     {
         if (apiManager is null) throw new ArgumentNullException(nameof(apiManager));
-        var result = await apiManager.UpdateProjectAsync(Json, ct);
+        var result = await apiManager.UpdateProjectAsync(Json, WhatIf, ct);
         return result;
     }
 }

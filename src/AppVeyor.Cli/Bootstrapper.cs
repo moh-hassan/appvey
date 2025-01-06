@@ -6,9 +6,10 @@ using Api;
 using Api.Utility;
 using Commands;
 using Cli = DotMake.CommandLine.Cli;
-
-public class Bootstrapper
-{   
+#pragma warning disable 8618
+public static class Bootstrapper
+{
+    public static ResponseResult ResponseResult { get; set; } = ResponseResult.Default();
     public static async Task<int> StartAsync(string[] args)
     {
         var cancellationTokenSource = new CancellationTokenSource();
@@ -25,7 +26,7 @@ public class Bootstrapper
             EnableDiagramDirective = true,
             ProcessTerminationTimeout = TimeSpan.FromSeconds(5.0),
             EnableEnvironmentVariablesDirective = true,
-            Theme = CliTheme.Green,
+            Theme = CliTheme.Green            
         };
         string[] helpArgs = { "-h", "-?", "--help", "--version" };
 
@@ -33,7 +34,7 @@ public class Bootstrapper
         var heading = pi.Heading;
         WriteInfo(heading);
         var exitCode = await Cli.RunAsync<AppveyorCommand>(args, setting, cancellationTokenSource.Token);
-
+        
         if (exitCode == 0)
         {
             if (!(args.Length == 0 || helpArgs.Any(args.Contains)))

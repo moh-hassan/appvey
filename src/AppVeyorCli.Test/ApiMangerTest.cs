@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Api;
 using Api.Collection;
 using Api.Utility;
-using Extensions;
+using AppVeyor.Test.Extensions;
 
 public class ApiMangerTest
 {
@@ -15,7 +15,7 @@ public class ApiMangerTest
     private ApiManager _apiManager;
     private CancellationToken _ct = default;
     private IEnv _env = new DummyEnv();
-
+    bool WhatIf = false;
     [OneTimeSetUp]
     public void Setup()
     {
@@ -35,7 +35,7 @@ public class ApiMangerTest
     public async Task Get_projects_test()
     {
         //Act
-        var sut = await _apiManager.GetProjectsAsync(_ct);
+        var sut = await _apiManager.GetProjectsAsync(WhatIf, _ct);
         //Assert
         Assert.Multiple(() =>
         {
@@ -49,7 +49,8 @@ public class ApiMangerTest
     public async Task Get_project_last_branch_build_test()
     {
         //Act
-        var sut = await _apiManager.GetProjectLastBranchBuildAsync(TestCases.slug, TestCases.branch, _ct);
+        var sut = await _apiManager
+            .GetProjectLastBranchBuildAsync(TestCases.slug, TestCases.branch, WhatIf, _ct);
         //Assert
         Assert.Multiple(() =>
         {
@@ -62,7 +63,8 @@ public class ApiMangerTest
     public async Task Get_project_last_build_test()
     {
         //Act
-        var sut = await _apiManager.GetProjectLastBranchBuildAsync(TestCases.slug, branch: null, _ct);
+        var sut = await _apiManager
+            .GetProjectLastBranchBuildAsync(TestCases.slug, branch: null, WhatIf, _ct);
         //Assert
         Assert.Multiple(() =>
         {
@@ -75,7 +77,8 @@ public class ApiMangerTest
     public async Task Get_project_build_by_version_test()
     {
         //Act
-        var sut = await _apiManager.GetProjectBuildByVersionAsync(TestCases.slug, TestCases.version, _ct);
+        var sut = await _apiManager
+            .GetProjectBuildByVersionAsync(TestCases.slug, TestCases.version, WhatIf, _ct);
         //Assert
         Assert.Multiple(() =>
         {
@@ -127,7 +130,8 @@ public class ApiMangerTest
     public async Task Get_project_settings_in_YAML_test()
     {
         //Act
-        var sut = await _apiManager.GetProjectYamlSettingsAsync(TestCases.slug, _ct);
+        var sut = await _apiManager
+            .GetProjectYamlSettingsAsync(TestCases.slug, WhatIf, _ct);
         //Assert
         Assert.Multiple(() =>
         {
@@ -140,7 +144,7 @@ public class ApiMangerTest
     public async Task Get_project_environment_variables_test()
     {
         //Act
-        var sut = await _apiManager.GetProjectEnvironmentAsync(TestCases.slug, _ct);
+        var sut = await _apiManager.GetProjectEnvironmentAsync(TestCases.slug, WhatIf, _ct);
         //Assert
         Assert.Multiple(() =>
         {
@@ -153,7 +157,8 @@ public class ApiMangerTest
     public async Task Post_AddProject_test()
     {
         //Act
-        var sut = await _apiManager.AddProjectAsync(TestCases.repositoryProvider, TestCases.repositoryName, _ct);
+        var sut = await _apiManager
+            .AddProjectAsync(TestCases.repositoryProvider, TestCases.repositoryName, WhatIf, _ct);
         //Assert
         Assert.Multiple(() =>
         {
@@ -169,7 +174,8 @@ public class ApiMangerTest
         var body = _updateProjectEnvironmentVariablesBody;
         var file = body.WriteToTempFile();
         //Act
-        var sut = await _apiManager.UpdateProjectEnvironmentVariablesAsync(TestCases.slug, file, _ct);
+        var sut = await _apiManager
+            .UpdateProjectEnvironmentVariablesAsync(TestCases.slug, file, WhatIf, _ct);
         //Assert
         Assert.Multiple(() =>
         {
@@ -188,7 +194,8 @@ public class ApiMangerTest
             "var1:new-value"
         });
         //Act
-        var sut = await _apiManager.UpdateProjectEnvironmentVariablesAsync(TestCases.slug, body, _ct);
+        var sut = await _apiManager
+            .UpdateProjectEnvironmentVariablesAsync(TestCases.slug, body,WhatIf, _ct);
         //Assert
         Assert.Multiple(() =>
         {
@@ -211,7 +218,8 @@ public class ApiMangerTest
         var slug2 = "cloudbuilder";
         var file = yaml.WriteToTempFile();
         //Act
-        var sut = await _apiManager.UpdateProjectSettingsInYamlAsync(slug2, file, _ct);
+        var sut = await _apiManager
+            .UpdateProjectSettingsInYamlAsync(slug2, file, WhatIf, _ct);
 
         //Assert
         Assert.Multiple(() =>
@@ -225,7 +233,8 @@ public class ApiMangerTest
     public async Task Put_update_project_build_number_test()
     {
         //Act
-        var sut = await _apiManager.UpdateProjectBuildNumberAsync(TestCases.slug, 35, _ct);
+        var sut = await _apiManager
+            .UpdateProjectBuildNumberAsync(TestCases.slug, 35, WhatIf, _ct);
 
         //Assert
         Assert.Multiple(() =>
@@ -239,7 +248,8 @@ public class ApiMangerTest
     public async Task Delete_project_build_cache_test()
     {
         //Act
-        var sut = await _apiManager.DeleteProjectBuildCacheAsync(TestCases.slug, _ct);
+        var sut = await _apiManager
+            .DeleteProjectBuildCacheAsync(TestCases.slug, WhatIf, _ct);
         //Assert
         Assert.Multiple(() =>
         {
@@ -252,7 +262,7 @@ public class ApiMangerTest
     public async Task Delete_project_test()
     {
         //Act
-        var sut = await _apiManager.DeleteProjectAsync(TestCases.slug, _ct);
+        var sut = await _apiManager.DeleteProjectAsync(TestCases.slug, WhatIf, _ct);
         //Assert
         Assert.Multiple(() =>
         {
@@ -278,7 +288,8 @@ public class ApiMangerTest
     public async Task Start_build_of_specific_branch_commit_test()
     {
         //Act
-        var sut = await _apiManager.StartBuildCommitAsync(TestCases.slug, TestCases.branch, TestCases.commitId, _ct);
+        var sut = await _apiManager
+            .StartBuildCommitAsync(TestCases.slug, TestCases.branch, TestCases.commitId, WhatIf, _ct);
         //Assert
         Assert.Multiple(() =>
         {
@@ -291,7 +302,8 @@ public class ApiMangerTest
     public async Task Re_run_build_test()
     {
         //Act
-        var sut = await _apiManager.ReRunBuildCommitAsync(TestCases.buildId, TestCases.reRunIncomplete, _ct);
+        var sut = await _apiManager
+            .ReRunBuildCommitAsync(TestCases.buildId, TestCases.reRunIncomplete, WhatIf, _ct);
         //Assert
         Assert.Multiple(() =>
         {
@@ -304,7 +316,8 @@ public class ApiMangerTest
     public async Task Start_build_of_pull_request_test()
     {
         //Act
-        var sut = await _apiManager.StartBuildPrAsync(TestCases.slug, TestCases.pullRequestId, _ct);
+        var sut = await _apiManager
+            .StartBuildPrAsync(TestCases.slug, TestCases.pullRequestId, WhatIf, _ct);
         //Assert
         Assert.Multiple(() =>
         {
@@ -317,7 +330,8 @@ public class ApiMangerTest
     public async Task Cancel_build_test()
     {
         //Act
-        var sut = await _apiManager.CancelBuildAsync(TestCases.slug, TestCases.version, _ct);
+        var sut = await _apiManager
+            .CancelBuildAsync(TestCases.slug, TestCases.version, WhatIf, _ct);
         //Assert
         Assert.Multiple(() =>
         {
@@ -330,7 +344,7 @@ public class ApiMangerTest
     public async Task Delete_builds_test()
     {
         //Act
-        var sut = await _apiManager.DeleteBuildsAsync(new[] { TestCases.buildId }, _ct);
+        var sut = await _apiManager.DeleteBuildsAsync(new[] { TestCases.buildId }, WhatIf, _ct);
         //Assert
         Assert.Multiple(() =>
         {
@@ -343,7 +357,7 @@ public class ApiMangerTest
     public async Task Download_build_log_test()
     {
         //Act
-        var sut = await _apiManager.DownloadBuildLogAsync(TestCases.jobId, _ct);
+        var sut = await _apiManager.DownloadBuildLogAsync(TestCases.jobId, WhatIf, _ct);
         //Assert
         Assert.Multiple(() =>
         {

@@ -142,7 +142,7 @@ public class ArtifactsDownload : IDisposable
         bool flat = false,
         CancellationToken ct = default)
     {
-        var buildInfo = await ApiManager.GetBuildInfoAsync(project, version, ct);
+        var buildInfo = await ApiManager.GetBuildInfoAsync(project, version, false, ct);
 
         if (buildInfo == null)
         {

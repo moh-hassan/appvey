@@ -29,7 +29,7 @@ public partial class ApiManager
 
     public async Task<ResponseResult> UpdateUserAsync(string json, CancellationToken ct = default)
     {
-        var apiUrl = $"{ApiUrl(Account)}/users";
+        var apiUrl = ApiEndpoints.PutUsersUrl(Account);
         return await ApiClient.PutApiAsync(apiUrl, json, ct);
     }
 

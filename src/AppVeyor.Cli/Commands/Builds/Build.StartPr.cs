@@ -23,7 +23,8 @@ public class Pr : AppveyorCommandBase
     {
         if (apiManager == null) throw new ArgumentNullException(nameof(apiManager));
 
-        var result = await apiManager.StartBuildPrAsync(Slug, PrId, ct).ConfigureAwait(false);
+        var result = await apiManager
+            .StartBuildPrAsync(Slug, PrId, WhatIf, ct).ConfigureAwait(false);
         return result;
     }
 }

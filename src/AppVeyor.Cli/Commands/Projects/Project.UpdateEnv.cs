@@ -35,7 +35,7 @@ public class UpdateEnvironment : AppveyorCommandBase
         {
             var environment = new EncryptedEnvironmentCollection(Env);
             var result = await apiManager
-                .UpdateProjectEnvironmentVariablesAsync(Slug, environment, ct)
+                .UpdateProjectEnvironmentVariablesAsync(Slug, environment, WhatIf, ct)
                 .ConfigureAwait(false);
             return result;
         }
@@ -43,7 +43,7 @@ public class UpdateEnvironment : AppveyorCommandBase
         if (Json != null)
         {
             var result = await apiManager
-                .UpdateProjectEnvironmentVariablesAsync(Slug, Json, ct)
+                .UpdateProjectEnvironmentVariablesAsync(Slug, Json, WhatIf, ct)
                 .ConfigureAwait(false);
             return result;
         }

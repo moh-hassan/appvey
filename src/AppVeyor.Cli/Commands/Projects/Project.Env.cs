@@ -18,7 +18,8 @@ public class EnvironmentCommand : AppveyorCommandBase
     protected override async Task<ResponseResult> RunApiAsync(ApiManager apiManager, CancellationToken ct)
     {
         if (apiManager is null) throw new ArgumentNullException(nameof(apiManager));
-        var result = await apiManager.GetProjectEnvironmentAsync(Slug, ct).ConfigureAwait(false);
+        var result = await apiManager
+            .GetProjectEnvironmentAsync(Slug, WhatIf, ct).ConfigureAwait(false);
         return result;
     }
 }

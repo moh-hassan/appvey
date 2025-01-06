@@ -29,7 +29,8 @@ public class Commit : AppveyorCommandBase
         if (apiManager == null) throw new ArgumentNullException(nameof(apiManager));
 
         _ = IsValidOptions();
-        var result = await apiManager.StartBuildCommitAsync(Slug, Branch, CommitId, ct);
+        var result = await apiManager
+            .StartBuildCommitAsync(Slug, Branch, CommitId, WhatIf, ct);
         if (result.StatusCode != HttpStatusCode.OK)
         {
             WriteLine("Failed to start the build");

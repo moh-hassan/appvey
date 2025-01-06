@@ -2,6 +2,7 @@
 
 namespace AppVeyor.Cli.Commands;
 
+using System.IO;
 using System.Net;
 using System.Threading;
 using Api;
@@ -68,11 +69,17 @@ public abstract class AppveyorCommandBase
 
     public virtual async Task<int> RunAsync(CliContext context)
     {
-        ExecutionInfo.Clear();
-        Token = InputHelper.ProcessToken(Token);
+         _httpConnection = HttpConnection
+            .Create(Env, Account, Token, ProxyAddress, ProxyUser, Verbose);
+        //Process request
         var ct = context.CancellationToken;
-        using var apiManager = GetApiManager();
+        using var apiManager = new ApiManager(_httpConnection);
         var result = await RunApiAsync(apiManager, ct).ConfigureAwait(false);
+        Bootstrapper.ResponseResult = result;
+
+        //what-if mode
+        if (WhatIf)
+            return WhatIfDisplay(context, result);
 
         if (result == null) return 1;
 
@@ -84,14 +91,13 @@ public abstract class AppveyorCommandBase
             WriteInfo("\nOutput response:");
         }
 
-        Request = result.Request;
+       // Request = result.HttpRequest;
         DisplayResponseResult(result);
         if (Save != null)
             result.SaveResponse(Save);
         if (Output != null)
             Logger.Save(Output);
         await PostCommandAsync(apiManager, result, ct);
-        SetExecutionInfo();
         return 0;
     }
 
@@ -102,7 +108,8 @@ public abstract class AppveyorCommandBase
 
     protected RestApi.Model.Build PrintBuildReport(ResponseResult result, bool browse, string slug)
     {
-        var buildReport = new BuildReporting(result, slug, Account);
+        var account= _httpConnection.AccountCredential.UserName;
+        var buildReport = new BuildReporting(result, slug, account);
         var build = buildReport.PrintReport(browse);
         return build;
     }
@@ -131,20 +138,15 @@ public abstract class AppveyorCommandBase
         }
     }
 
-    private ApiManager GetApiManager()
+    protected virtual int WhatIfDisplay(CliContext context, ResponseResult result)
     {
-        var httpConnection = HttpConnection
-            .Create(Env, Account, Token, ProxyAddress, ProxyUser, Verbose);
-        return new ApiManager(httpConnection);
-    }
-
-    private void SetExecutionInfo()
-    {
-        ExecutionInfo.Title = Title;
-        ExecutionInfo.Tag = Tag;
-        ExecutionInfo.Request = Request;
-#if DEBUG
-        ExecutionInfo.Show(Verbose);
-#endif
+        WriteInfo($"What-if mode.");
+        WriteInfo($"{Title}");
+        WriteInfo("CommandLine options:");
+        context.ShowValues();
+        WriteInfo($"Run Command: {Tag.Q()}");
+        WriteLine();
+        result.ShowResult();
+        return 0;
     }
 }

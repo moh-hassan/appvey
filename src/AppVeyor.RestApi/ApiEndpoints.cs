@@ -51,7 +51,7 @@ public static class ApiEndpoints
     public static string GetProjectDeploymentUrl(string accountName, string projectSlug)
         => $"/api/projects/{accountName}/{projectSlug}/deployments";
 
-    public static string GetProjectSettingUrl(string accountName, string projectSlug)
+    public static string GetProjectSettingsUrl(string accountName, string projectSlug)
         => $"/api/projects/{accountName}/{projectSlug}/settings";
 
     public static string GetProjectYamlSettingUrl(string accountName, string projectSlug)
@@ -121,14 +121,14 @@ public static class ApiEndpoints
     public static string GetUsersUrl(string accountName)
        => $"{ApiUrl(accountName)}/users";
 
-    public static string GetUserUrl(string accountName, string userId)
+    public static string GetUsersUrl(string accountName, string userId)
         => $"{ApiUrl(accountName)}/users/{userId}";
 
     public static string PostUsersUrl(string accountName) => GetUsersUrl(accountName);
 
-    public static string PutUserUrl(string accountName) => GetUsersUrl(accountName);
+    public static string PutUsersUrl(string accountName) => GetUsersUrl(accountName);
 
-    public static string DelUserUrl(string accountName, string userId) => GetUserUrl(accountName, userId);
+    public static string DeleteUsersUrl(string accountName, string userId) => GetUsersUrl(accountName, userId);
 
     public static string GetCollaboratorsUrl(string accountName)
         => $"{ApiUrl(accountName)}/collaborators";

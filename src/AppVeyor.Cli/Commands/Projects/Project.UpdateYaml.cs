@@ -23,7 +23,8 @@ public class UpdateYamlSetting : AppveyorCommandBase
     protected override async Task<ResponseResult> RunApiAsync(ApiManager apiManager, CancellationToken ct)
     {
         if (apiManager is null) throw new ArgumentNullException(nameof(apiManager));
-        var result = await apiManager.UpdateProjectSettingsInYamlAsync(Slug, YamlSetting, ct);
+        var result = await apiManager
+            .UpdateProjectSettingsInYamlAsync(Slug, YamlSetting, WhatIf, ct);
         return result;
     }
 }
