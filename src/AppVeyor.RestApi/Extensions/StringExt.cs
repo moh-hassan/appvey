@@ -15,14 +15,24 @@ public static class StringExt
         return string.Join(separator, args);
     }
 
-    public static (string key, string value) SplitString(this string twoParts, char separator = ':')
+    public static (string key, string value) SplitString(this string text, char separator)
     {
-        if (string.IsNullOrEmpty(twoParts))
-            return (string.Empty, string.Empty);
-        var parts = twoParts.Split(separator);
-        return parts.Length == 1 ? (parts[0], "") : (parts[0], parts[1]);
+        var pattern = @$"^(.*?){separator}\s*""?(.*?)""?$";
+        var match = Regex.Match(text, pattern);
+        return match.Success
+            ? (match.Groups[1].Value, match.Groups[2].Value)
+            : (text, string.Empty);
     }
 
+    public static (string key, string value) SplitString(this string text)
+    {
+        //separator can be either : or =
+        var pattern = @"^(.*?)[:=]\s*""?(.*?)""?$";
+        var match = Regex.Match(text, pattern);
+        return match.Success
+            ? (match.Groups[1].Value, match.Groups[2].Value)
+            : (text, string.Empty);
+    }
     public static string? FullException(this Exception ex)
     {
         if (ex == null) return null;
@@ -36,14 +46,6 @@ public static class StringExt
     }
 
     public static string Q(this string str) => $"\"{str}\"";
-
-    //public static string[] SplitArgs(this string input)
-    //{
-    //    var pattern = """(?<=\s|^)(?:(?:"[^"]*")|\S+)(?=\s|$)""";
-    //    var matches = Regex.Matches(input, pattern);
-    //    return matches.Select(m => m.Value).ToArray();
-    //}
-
     public static string AddQueryString(this string uri, string name, object? obj)
     {
         var value = obj?.ToString();
