@@ -8,7 +8,7 @@ using Api;
 using Api.Collection;
 using RestApi.Extensions;
 
-[CliCommand(Description = "Start build of branch most recent commit",
+[CliCommand(Description = "Start build of branch most recent commit.\nExample 1:\n appvey build start recent -s myproject --browse\nExample 2 using environment variables with = separator:\nappvey build start recent -s myproject --browse  var1=value1 var2=value2\nExample 3 using file:\nappvey build start recent -s myproject --browse @myenv.txt",
     Parent = typeof(AppveyorCommand.BuildCommand.StartCommand))]
 public class Recent : AppveyorCommandBase, IBrowse
 {
@@ -53,7 +53,7 @@ public class Recent : AppveyorCommandBase, IBrowse
     {
         if (Cancel && Confirm("Cancel Build."))
         {
-            await apiManager.CancelBuildAsync(Slug, version, ct);
+            await apiManager.CancelBuildAsync(Slug, version, WhatIf, ct);
         }
     }
 
