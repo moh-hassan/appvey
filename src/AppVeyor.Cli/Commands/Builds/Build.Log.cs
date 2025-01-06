@@ -28,7 +28,8 @@ public class DownloadLog : AppveyorCommandBase
         ValidateOptions(Version, JobId);
         if (!string.IsNullOrEmpty(Version))
         {
-            var buildInfo = await apiManager.GetBuildInfoAsync(Slug, Version, ct).ConfigureAwait(false);
+            var buildInfo = await apiManager
+                .GetBuildInfoAsync(Slug, Version, WhatIf, ct).ConfigureAwait(false);
             JobId = buildInfo?.Build.Jobs[0].JobId;
             if (string.IsNullOrEmpty(JobId))
             {
@@ -42,7 +43,8 @@ public class DownloadLog : AppveyorCommandBase
             throw new AppveyorException("job-id is required");
         }
 
-        var result = await apiManager.DownloadBuildLogAsync(JobId, ct).ConfigureAwait(false);
+        var result = await apiManager
+            .DownloadBuildLogAsync(JobId, WhatIf, ct).ConfigureAwait(false);
         return result;
     }
 }

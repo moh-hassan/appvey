@@ -16,7 +16,7 @@ internal partial class ApiClient : IDisposable
 {
     public string AppVeyorBaseUrl { get; }
 
-    internal bool Verbose;
+    internal bool _verbose;
     private HttpClient Client { get; }
     private HttpClientHandler ClientHandler { get; }
 
@@ -60,8 +60,8 @@ internal partial class ApiClient : IDisposable
         Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/plain"));
         SetupAgent();
-        Verbose = httpConnection.Verbose;
-        if (Verbose)
+        _verbose = httpConnection.Verbose;
+        if (_verbose)
         {
             WriteInfo($"Success Connection");
         }

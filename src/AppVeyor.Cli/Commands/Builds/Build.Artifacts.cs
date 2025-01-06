@@ -75,20 +75,7 @@ public class Artifacts : AppveyorCommandBase
 
         return ResponseResult.Default();
     }
-
-    //private void ValidateOptions()
-    //{
-    //    if (string.IsNullOrEmpty(JobId) && string.IsNullOrEmpty(BuildVersion))
-    //    {
-    //        throw new AppveyorException("Either JobId or Version must be specified");
-    //    }
-
-    //    if (!string.IsNullOrEmpty(JobId) && !string.IsNullOrEmpty(BuildVersion))
-    //    {
-    //        throw new AppveyorException("JobId and Version are mutually exclusive");
-    //    }
-    //}
-
+    
     private string GetPattern()
     {
         if (Filter == null || Filter.Length == 0) return string.Empty;
@@ -102,5 +89,3 @@ public class Artifacts : AppveyorCommandBase
     }
 }
 #nullable restore
-
-

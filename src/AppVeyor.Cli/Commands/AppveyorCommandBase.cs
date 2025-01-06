@@ -2,6 +2,7 @@
 
 namespace AppVeyor.Cli.Commands;
 
+using System.IO;
 using System.Net;
 using System.Threading;
 using Api;
@@ -15,38 +16,44 @@ public abstract class AppveyorCommandBase
 {
     protected virtual string Title { get; }
     protected virtual string Tag { get; }
-    protected virtual string Request { get; set; }
 
-    [CliOption(Description = "Verbose http connection.")]
-    public bool Verbose { get; set; }
-
-    [CliOption(Required = false,
-        Description = "Appveyor token v2. Type dash '-' to enter/paste token from keyboard or @filename to read token from filename or skip it to read token from environment var.")
-    ]
+    [CliOption(Required = false, Aliases = ["-t", "--token"],
+        Description = "Appveyor token v2.\n Type dash '-' to enter/paste token from keyboard\nor @filename to read token from filename\nor ignore it to read token from environment variable.")]
     public string Token { get; set; }
 
-    [CliOption(Required = false,
+    [CliOption(Required = false, Aliases = ["-a", "--account"],
         Description = "Appveyor User account or skip it to read account from environment var.")]
     public virtual string Account { get; set; }
 
-    [CliOption(Required = false, Aliases = ["--pa"],
+    [CliOption(Required = false, HelpName = "http://proxy:port",
+        Aliases = ["-p", "--pa"],
         Description = "Proxy server should be in the form http://proxy:port",
         ValidationPattern = "^https?:\\/\\/[a-zA-Z0-9.-]+:[0-9]+$",
         ValidationMessage = "Proxy server should be in the form http://proxy:port")]
     public string ProxyAddress { get; set; }
 
-    [CliOption(Required = false, Name = "-u", Aliases = ["--pu", "--proxy-user"],
-        Description = "Proxy user/password should be in the form username:password", ValidationPattern = "^[^:]+:[^:]+$",
-        ValidationMessage = "Proxy user/password should be in the form username:password")]
+    [CliOption(Required = false, Name = "-u", HelpName = "username:password",
+        Aliases = ["-u", "--pu", "--proxy-user"],
+        Description = "Proxy user/password should be in the form 'username:password'", ValidationPattern = "^[^:]+:[^:]+$",
+        ValidationMessage = "Proxy user/password should be in the form 'username:password'")]
     public string ProxyUser { get; set; }
 
-    [CliOption(Required = false, Description = "File to save output response.")]
+    [CliOption(Required = false, Aliases = ["-s", "--save"],
+        Description = "File to save output response.")]
     public FileInfo Save { get; set; }
 
-    [CliOption(Required = false, Description = "File to save screen output.")]
+    [CliOption(Required = false, Aliases = ["-o", "--output"],
+        Description = "File to save screen output.")]
     public FileInfo Output { get; set; }
 
+    [CliOption(Required = false, Aliases = ["-w", "--wi", "--what-if"],
+        Description = "Run the command without executing the actions of the command so no changes occur.\r\nIt displays optins and argument values and the expected Http Request:\r\n (Url, Method  <Get|Post|Put|Delete>, JsonBody.")]
+    public bool WhatIf { get; set; }
+    [CliOption(Description = "Verbose http connection details.",
+        Aliases = ["-v", "--verbose"])]
+    public bool Verbose { get; set; }
     private IEnv Env => ServiceLocator.GetService<IEnv>();
+    private HttpConnection _httpConnection;
 
     protected virtual Task<ResponseResult> RunApiAsync(ApiManager apiManager, CancellationToken ct)
     {
@@ -62,11 +69,17 @@ public abstract class AppveyorCommandBase
 
     public virtual async Task<int> RunAsync(CliContext context)
     {
-        ExecutionInfo.Clear();
-        Token = InputHelper.ProcessToken(Token);
+         _httpConnection = HttpConnection
+            .Create(Env, Account, Token, ProxyAddress, ProxyUser, Verbose);
+        //Process request
         var ct = context.CancellationToken;
-        using var apiManager = GetApiManager();
+        using var apiManager = new ApiManager(_httpConnection);
         var result = await RunApiAsync(apiManager, ct).ConfigureAwait(false);
+        Bootstrapper.ResponseResult = result;
+
+        //what-if mode
+        if (WhatIf)
+            return WhatIfDisplay(context, result);
 
         if (result == null) return 1;
 
@@ -78,14 +91,13 @@ public abstract class AppveyorCommandBase
             WriteInfo("\nOutput response:");
         }
 
-        Request = result.Request;
+       // Request = result.HttpRequest;
         DisplayResponseResult(result);
         if (Save != null)
             result.SaveResponse(Save);
         if (Output != null)
             Logger.Save(Output);
         await PostCommandAsync(apiManager, result, ct);
-        SetExecutionInfo();
         return 0;
     }
 
@@ -96,7 +108,8 @@ public abstract class AppveyorCommandBase
 
     protected RestApi.Model.Build PrintBuildReport(ResponseResult result, bool browse, string slug)
     {
-        var buildReport = new BuildReporting(result, slug, Account);
+        var account= _httpConnection.AccountCredential.UserName;
+        var buildReport = new BuildReporting(result, slug, account);
         var build = buildReport.PrintReport(browse);
         return build;
     }
@@ -125,20 +138,15 @@ public abstract class AppveyorCommandBase
         }
     }
 
-    private ApiManager GetApiManager()
+    protected virtual int WhatIfDisplay(CliContext context, ResponseResult result)
     {
-        var httpConnection = HttpConnection
-            .Create(Env, Account, Token, ProxyAddress, ProxyUser, Verbose);
-        return new ApiManager(httpConnection);
-    }
-
-    private void SetExecutionInfo()
-    {
-        ExecutionInfo.Title = Title;
-        ExecutionInfo.Tag = Tag;
-        ExecutionInfo.Request = Request;
-#if DEBUG
-        ExecutionInfo.Show(Verbose);
-#endif
+        WriteInfo($"What-if mode.");
+        WriteInfo($"{Title}");
+        WriteInfo("CommandLine options:");
+        context.ShowValues();
+        WriteInfo($"Run Command: {Tag.Q()}");
+        WriteLine();
+        result.ShowResult();
+        return 0;
     }
 }

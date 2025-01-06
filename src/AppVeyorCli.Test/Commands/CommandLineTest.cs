@@ -2,6 +2,7 @@
 
 namespace AppVeyor.Test.Commands;
 
+using System.Net;
 using Api;
 using Api.Utility;
 using Extensions;
@@ -39,14 +40,13 @@ public class CommandLineTest
         //Arrange
         var args = $"project last-build --slug {TestCases.slug} --branch {TestCases.branch} -v"
             .SplitArgs();
-
         //Act
         var sut = await Bootstrapper.StartAsync(args);
         //Assert
-        SharedDataAssertions.ShouldBeEquivalentTo(
-            "Get Project last branch build ...",
-            "project last-build",
-            "GET /api/projects/moh-hassan/cloudbuilder/branch/master");
+        Bootstrapper.ResponseResult.IsSuccess.Should().BeTrue();
+        Bootstrapper.ResponseResult.StatusCode.Should().Be(HttpStatusCode.OK);
+        Bootstrapper.ResponseResult.HttpRequest.Should()
+            .Be("GET /api/projects/moh-hassan/cloudbuilder/branch/master");
         sut.Should().Be(0);
     }
 
@@ -59,10 +59,12 @@ public class CommandLineTest
 
         //Act
         var sut = await Bootstrapper.StartAsync(args);
-        SharedDataAssertions.ShouldBeEquivalentTo(
-            "Get Project last branch build ...",
-            "project last-build",
-            "GET /api/projects/moh-hassan/cloudbuilder");
+        //Console.WriteLine(Bootstrapper.ResponseResult.ResponseString);
+        //Assert
+        Bootstrapper.ResponseResult.IsSuccess.Should().BeTrue();
+        Bootstrapper.ResponseResult.StatusCode.Should().Be(HttpStatusCode.OK);
+        Bootstrapper.ResponseResult.HttpRequest.Should()
+            .Be("GET /api/projects/moh-hassan/cloudbuilder");
         sut.Should().Be(0);
     }
 
@@ -77,10 +79,10 @@ public class CommandLineTest
         var sut = await Bootstrapper.StartAsync(args);
         //Assert
         sut.Should().Be(0);
-        SharedDataAssertions.ShouldBeEquivalentTo(
-            "Get projects ...",
-            "project list",
-            "GET /api/account/moh-hassan/projects");
+        Bootstrapper.ResponseResult.IsSuccess.Should().BeTrue();
+        Bootstrapper.ResponseResult.StatusCode.Should().Be(HttpStatusCode.OK);
+        Bootstrapper.ResponseResult.HttpRequest.Should()
+            .Be("GET /api/account/moh-hassan/projects");
     }
 
 
@@ -94,10 +96,10 @@ public class CommandLineTest
         //Act
         var sut = await Bootstrapper.StartAsync(args);
         //Assert
-        SharedDataAssertions.ShouldBeEquivalentTo(
-            "Get project build by version ...",
-            "project build-version",
-            $"GET /api/projects/moh-hassan/cloudbuilder/build/{TestCases.version}");
+        Bootstrapper.ResponseResult.IsSuccess.Should().BeTrue();
+        Bootstrapper.ResponseResult.StatusCode.Should().Be(HttpStatusCode.OK);
+        Bootstrapper.ResponseResult.HttpRequest.Should()
+            .Be($"GET /api/projects/moh-hassan/cloudbuilder/build/{TestCases.version}");      
         sut.Should().Be(0);
     }
 
@@ -109,10 +111,10 @@ public class CommandLineTest
         //Act
         var sut = await Bootstrapper.StartAsync(args);
         //Assert
-        SharedDataAssertions.ShouldBeEquivalentTo(
-            "Get project history ...",
-            "project history",
-            "GET /api/projects/moh-hassan/cloudbuilder/history");
+        Bootstrapper.ResponseResult.IsSuccess.Should().BeTrue();
+        Bootstrapper.ResponseResult.StatusCode.Should().Be(HttpStatusCode.OK);
+        Bootstrapper.ResponseResult.Url.Should()
+            .Be("/api/projects/moh-hassan/cloudbuilder/history?recordsNumber=20&branch=master");
         sut.Should().Be(0);
     }
 
@@ -124,12 +126,13 @@ public class CommandLineTest
         var args = $"project deploy --slug {TestCases.slug} -v".SplitArgs();
         //Act
         var sut = await Bootstrapper.StartAsync(args);
+        Console.WriteLine(Bootstrapper.ResponseResult.Url);
         //Assert
         Assert.That(sut, Is.EqualTo(0));
-        SharedDataAssertions.ShouldBeEquivalentTo(
-            "Project deployments ...",
-            "project deploy",
-            "GET /api/projects/moh-hassan/cloudbuilder/deployments");
+        Bootstrapper.ResponseResult.IsSuccess.Should().BeTrue();
+        Bootstrapper.ResponseResult.StatusCode.Should().Be(HttpStatusCode.OK);
+        Bootstrapper.ResponseResult.Url.Should()
+            .Be("/api/projects/moh-hassan/cloudbuilder/deployments?recordsNumber=20");
     }
 
     [Test]
@@ -140,11 +143,11 @@ public class CommandLineTest
         //Act
         var sut = await Bootstrapper.StartAsync(args);
         //Assert
-        Assert.That(sut, Is.EqualTo(0));
-        SharedDataAssertions.ShouldBeEquivalentTo(
-            "Get project settings ...",
-            "project settings",
-            "GET /api/projects/moh-hassan/cloudbuilder/settings");
+        Bootstrapper.ResponseResult.IsSuccess.Should().BeTrue();
+        Bootstrapper.ResponseResult.StatusCode.Should().Be(HttpStatusCode.OK);
+        Bootstrapper.ResponseResult.HttpRequest.Should()
+            .Be("GET /api/projects/moh-hassan/cloudbuilder/settings");
+        Assert.That(sut, Is.EqualTo(0));        
     }
 
     [Test]
@@ -156,11 +159,11 @@ public class CommandLineTest
         //Act
         var sut = await Bootstrapper.StartAsync(args);
         //Assert
-        Assert.That(sut, Is.EqualTo(0));
-        SharedDataAssertions.ShouldBeEquivalentTo(
-            "Get project settings in YAML ...",
-            "project yaml",
-            "GET /api/projects/moh-hassan/cloudbuilder/settings/yaml");
+        Bootstrapper.ResponseResult.IsSuccess.Should().BeTrue();
+        Bootstrapper.ResponseResult.StatusCode.Should().Be(HttpStatusCode.OK);
+        Bootstrapper.ResponseResult.HttpRequest.Should()
+            .Be("GET /api/projects/moh-hassan/cloudbuilder/settings/yaml");
+        Assert.That(sut, Is.EqualTo(0));        
     }
 
     [Test]
@@ -172,11 +175,11 @@ public class CommandLineTest
         //Act
         var sut = await Bootstrapper.StartAsync(args);
         //Assert
-        Assert.That(sut, Is.EqualTo(0));
-        SharedDataAssertions.ShouldBeEquivalentTo(
-            "Get project environment variables ...",
-            "project env",
-            "GET /api/projects/moh-hassan/cloudbuilder/settings/environment-variables");
+        Bootstrapper.ResponseResult.IsSuccess.Should().BeTrue();
+        Bootstrapper.ResponseResult.StatusCode.Should().Be(HttpStatusCode.OK);
+        Bootstrapper.ResponseResult.HttpRequest.Should()
+            .Be("GET /api/projects/moh-hassan/cloudbuilder/settings/environment-variables");
+        Assert.That(sut, Is.EqualTo(0));        
     }
 
     [Test]
@@ -190,11 +193,11 @@ public class CommandLineTest
         //Act
         var sut = await Bootstrapper.StartAsync(args);
         //Assert
-        Assert.That(sut, Is.EqualTo(0));
-        SharedDataAssertions.ShouldBeEquivalentTo(
-            "Add project ...",
-            "project add",
-            "POST /api/account/moh-hassan/projects");
+        Bootstrapper.ResponseResult.IsSuccess.Should().BeTrue();
+        Bootstrapper.ResponseResult.StatusCode.Should().Be(HttpStatusCode.OK);
+        Bootstrapper.ResponseResult.HttpRequest.Should()
+            .Be("POST /api/account/moh-hassan/projects");
+        Assert.That(sut, Is.EqualTo(0));        
     }
 
     [Test]
@@ -209,11 +212,11 @@ public class CommandLineTest
         //Act
         var sut = await Bootstrapper.StartAsync(args);
         //Assert
-        Assert.That(sut, Is.EqualTo(0));
-        SharedDataAssertions.ShouldBeEquivalentTo(
-            "Update project environment variables ...",
-            "project update env",
-            "PUT /api/projects/moh-hassan/cloudbuilder/settings/environment-variables");
+        Bootstrapper.ResponseResult.IsSuccess.Should().BeTrue();
+        Bootstrapper.ResponseResult.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        Bootstrapper.ResponseResult.HttpRequest.Should()
+            .Be("PUT /api/projects/moh-hassan/cloudbuilder/settings/environment-variables");
+        Assert.That(sut, Is.EqualTo(0));        
     }
 
     [Test]
@@ -245,15 +248,15 @@ public class CommandLineTest
 
         var args = $"project update env --slug {TestCases.slug} --json {tempFile}"
             .SplitArgs();
-
+       
         //Act
         var sut = await Bootstrapper.StartAsync(args);
         //Assert
-        Assert.That(sut, Is.EqualTo(0));
-        SharedDataAssertions.ShouldBeEquivalentTo(
-            "Update project environment variables ...",
-            "project update env",
-            "PUT /api/projects/moh-hassan/cloudbuilder/settings/environment-variables");
+        Bootstrapper.ResponseResult.IsSuccess.Should().BeTrue();
+        Bootstrapper.ResponseResult.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        Bootstrapper.ResponseResult.HttpRequest.Should()
+            .Be("PUT /api/projects/moh-hassan/cloudbuilder/settings/environment-variables");
+        Assert.That(sut, Is.EqualTo(0));        
     }
 
     [Test]
@@ -263,15 +266,15 @@ public class CommandLineTest
 
         //Arrange
         var args = $"project update build-number 35 --slug {TestCases.slug} -v".SplitArgs();
-
+        
         //Act
         var sut = await Bootstrapper.StartAsync(args);
         //Assert
-        Assert.That(sut, Is.EqualTo(0));
-        SharedDataAssertions.ShouldBeEquivalentTo(
-            "Update project build number ...",
-            "project update build-number",
-            "PUT /api/projects/moh-hassan/cloudbuilder/settings/build-number");
+        Bootstrapper.ResponseResult.IsSuccess.Should().BeTrue();
+        Bootstrapper.ResponseResult.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        Bootstrapper.ResponseResult.HttpRequest.Should()
+            .Be("PUT /api/projects/moh-hassan/cloudbuilder/settings/build-number"); 
+        Assert.That(sut, Is.EqualTo(0));        
     }
 
     [Test]
@@ -283,12 +286,11 @@ public class CommandLineTest
         //Act
         var sut = await Bootstrapper.StartAsync(args);
         //Assert
-
-        Assert.That(sut, Is.EqualTo(0));
-        SharedDataAssertions.ShouldBeEquivalentTo(
-            "Delete project build cache ...",
-            "project delete-cache",
-            "DELETE /api/projects/moh-hassan/cloudbuilder/buildcache");
+        Bootstrapper.ResponseResult.IsSuccess.Should().BeTrue();
+        Bootstrapper.ResponseResult.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        Bootstrapper.ResponseResult.HttpRequest.Should()
+            .Be("DELETE /api/projects/moh-hassan/cloudbuilder/buildcache");
+        Assert.That(sut, Is.EqualTo(0));        
     }
 
     [Test]
@@ -302,11 +304,11 @@ public class CommandLineTest
         //Act
         var sut = await Bootstrapper.StartAsync(args);
         //Assert
-        Assert.That(sut, Is.EqualTo(0));
-        SharedDataAssertions.ShouldBeEquivalentTo(
-            "Delete project ...",
-            "project delete",
-            "DELETE /api/projects/moh-hassan/cloudbuilder");
+        Bootstrapper.ResponseResult.IsSuccess.Should().BeTrue();
+        Bootstrapper.ResponseResult.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        Bootstrapper.ResponseResult.HttpRequest.Should()
+            .Be("DELETE /api/projects/moh-hassan/cloudbuilder");
+        Assert.That(sut, Is.EqualTo(0));        
     }
 
     [Test]
@@ -323,11 +325,11 @@ public class CommandLineTest
         //Act
         var sut = await Bootstrapper.StartAsync(args);
         //Assert
-        Assert.That(sut, Is.EqualTo(0));
-        SharedDataAssertions.ShouldBeEquivalentTo(
-            "Update project settings in YAML ...",
-            "project update yaml",
-            "PUT /api/projects/moh-hassan/cloudbuilder/settings/yaml");
+        Bootstrapper.ResponseResult.IsSuccess.Should().BeTrue();
+        Bootstrapper.ResponseResult.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        Bootstrapper.ResponseResult.HttpRequest.Should()
+            .Be("PUT /api/projects/moh-hassan/cloudbuilder/settings/yaml");
+        Assert.That(sut, Is.EqualTo(0));        
     }
 
     [Test]
@@ -339,11 +341,11 @@ public class CommandLineTest
         //Act
         var sut = await Bootstrapper.StartAsync(args);
         //Assert
-        Assert.That(sut, Is.EqualTo(0));
-        SharedDataAssertions.ShouldBeEquivalentTo(
-            "Start build of branch most recent commit ...",
-            "build start recent",
-            "POST /api/account/moh-hassan/builds");
+        Bootstrapper.ResponseResult.IsSuccess.Should().BeTrue();
+        Bootstrapper.ResponseResult.StatusCode.Should().Be(HttpStatusCode.OK);
+        Bootstrapper.ResponseResult.HttpRequest.Should()
+            .Be("POST /api/account/moh-hassan/builds");
+        Assert.That(sut, Is.EqualTo(0));        
     }
 
     [Test]
@@ -355,11 +357,11 @@ public class CommandLineTest
         //Act
         var sut = await Bootstrapper.StartAsync(args);
         //Assert
-        Assert.That(sut, Is.EqualTo(0));
-        SharedDataAssertions.ShouldBeEquivalentTo(
-            "Start build of specific branch commit ...",
-            "build start commit",
-            "POST /api/account/moh-hassan/builds");
+        Bootstrapper.ResponseResult.IsSuccess.Should().BeTrue();
+        Bootstrapper.ResponseResult.StatusCode.Should().Be(HttpStatusCode.OK);
+        Bootstrapper.ResponseResult.HttpRequest.Should()
+            .Be("POST /api/account/moh-hassan/builds");
+        Assert.That(sut, Is.EqualTo(0));        
     }
 
     [Test]
@@ -371,11 +373,11 @@ public class CommandLineTest
         //Act
         var sut = await Bootstrapper.StartAsync(args);
         //Assert
-        Assert.That(sut, Is.EqualTo(0));
-        SharedDataAssertions.ShouldBeEquivalentTo(
-            "Re-run build ...",
-            "build rerun",
-            "PUT /api/account/moh-hassan/builds");
+        Bootstrapper.ResponseResult.IsSuccess.Should().BeTrue();
+        Bootstrapper.ResponseResult.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        Bootstrapper.ResponseResult.HttpRequest.Should()
+            .Be("PUT /api/account/moh-hassan/builds");
+        Assert.That(sut, Is.EqualTo(0));        
     }
 
     [Test]
@@ -390,11 +392,11 @@ public class CommandLineTest
         //Act
         var sut = await Bootstrapper.StartAsync(args);
         //Assert
-        Assert.That(sut, Is.EqualTo(0));
-        SharedDataAssertions.ShouldBeEquivalentTo(
-            "Start build of Pull Request ...",
-            "build start pr",
-            "POST /api/account/moh-hassan/builds");
+        Bootstrapper.ResponseResult.IsSuccess.Should().BeTrue();
+        Bootstrapper.ResponseResult.StatusCode.Should().Be(HttpStatusCode.OK);
+        Bootstrapper.ResponseResult.HttpRequest.Should()
+            .Be("POST /api/account/moh-hassan/builds");
+        Assert.That(sut, Is.EqualTo(0));        
     }
 
     [Test]
@@ -409,11 +411,11 @@ public class CommandLineTest
         //Act
         var sut = await Bootstrapper.StartAsync(args);
         //Assert
-        Assert.That(sut, Is.EqualTo(0));
-        SharedDataAssertions.ShouldBeEquivalentTo(
-            "Cancel build ...",
-            "build cancel",
-            $"DELETE /api/builds/moh-hassan/cloudbuilder/{TestCases.version}");
+        Bootstrapper.ResponseResult.IsSuccess.Should().BeTrue();
+        Bootstrapper.ResponseResult.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        Bootstrapper.ResponseResult.HttpRequest.Should()
+            .Be($"DELETE /api/builds/moh-hassan/cloudbuilder/{TestCases.version}");
+        Assert.That(sut, Is.EqualTo(0));        
     }
 
     [Test]
@@ -428,11 +430,11 @@ public class CommandLineTest
         //Act
         var sut = await Bootstrapper.StartAsync(args);
         //Assert
-        Assert.That(sut, Is.EqualTo(0));
-        SharedDataAssertions.ShouldBeEquivalentTo(
-            "Delete build ...",
-            "build delete",
-            "DELETE /api/account/moh-hassan/builds/50127590");
+        Bootstrapper.ResponseResult.IsSuccess.Should().BeTrue();
+        Bootstrapper.ResponseResult.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        Bootstrapper.ResponseResult.HttpRequest.Should()
+            .Be("DELETE /api/account/moh-hassan/builds/50127590");
+        Assert.That(sut, Is.EqualTo(0));        
     }
 
     [Test]
@@ -444,10 +446,10 @@ public class CommandLineTest
         //Act
         var sut = await Bootstrapper.StartAsync(args);
         //Assert
-        Assert.That(sut, Is.EqualTo(0));
-        SharedDataAssertions.ShouldBeEquivalentTo(
-            "Download build log ...",
-            "build download log",
-            $"GET /api/buildjobs/{TestCases.jobId}/log");
+        Bootstrapper.ResponseResult.IsSuccess.Should().BeTrue();
+        Bootstrapper.ResponseResult.StatusCode.Should().Be(HttpStatusCode.OK);
+        Bootstrapper.ResponseResult.HttpRequest.Should()
+            .Be($"GET /api/buildjobs/{TestCases.jobId}/log");
+        Assert.That(sut, Is.EqualTo(0));        
     }
 }

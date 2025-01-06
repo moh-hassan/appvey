@@ -22,7 +22,8 @@ public class UpdateBuildNumber : AppveyorCommandBase
     protected override async Task<ResponseResult> RunApiAsync(ApiManager apiManager, CancellationToken ct)
     {
         if (apiManager == null) throw new ArgumentNullException(nameof(apiManager));
-        var result = await apiManager.UpdateProjectBuildNumberAsync(Slug, BuildNumber, ct);
+        var result = await apiManager
+            .UpdateProjectBuildNumberAsync(Slug, BuildNumber, WhatIf, ct);
         return result;
     }
 }

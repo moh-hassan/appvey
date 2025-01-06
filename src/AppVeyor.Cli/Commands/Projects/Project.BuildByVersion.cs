@@ -24,8 +24,9 @@ public class BuildByVersion : AppveyorCommandBase
 
     protected override async Task<ResponseResult> RunApiAsync(ApiManager apiManager, CancellationToken ct)
     {
-        var response = await apiManager.GetProjectBuildByVersionAsync(Slug, BuildVersion, ct);
-        Request = response.Request;
+        var response = await apiManager
+            .GetProjectBuildByVersionAsync(Slug, BuildVersion, WhatIf, ct);
+       // Request = response.HttpRequest;
         return response;
     }
 

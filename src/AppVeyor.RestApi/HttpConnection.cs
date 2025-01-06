@@ -22,7 +22,7 @@ public sealed class HttpConnection
     }
 
     public static HttpConnection Create(IEnv env,
-        string? account = null,
+         string? account = null,
         string? token = null,
         string? proxyAddress = null, string? proxyUser = null, bool verbose = false)
     {
@@ -32,8 +32,8 @@ public sealed class HttpConnection
     }
 
     private HttpConnection Initialize(
-        string? account = null,
-        string? token = null,
+       string? account,
+       string? token,
         string? proxyAddress = null,
         string? proxyUser = null, //format-> username:password
         bool verbose = false)

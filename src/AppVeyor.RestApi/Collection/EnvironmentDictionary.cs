@@ -4,6 +4,7 @@ namespace AppVeyor.Api.Collection;
 
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using AppVeyor.RestApi.Extensions;
 
 #pragma warning disable CA2227
 public record EnvironmentVar(string name, object value);
@@ -16,11 +17,11 @@ public class EnvironmentDictionary : Dictionary<string, object>
 
     public EnvironmentDictionary(params string[] items)
     {
-        items ??= [];
+        if (items == null || items.Length == 0) return;
         foreach (var item in items)
         {
             var envVar = ParseString(item);
-            if (envVar != null)
+            if (envVar != null)            
                 Add(envVar.name, envVar.value);
         }
     }
@@ -35,17 +36,7 @@ public class EnvironmentDictionary : Dictionary<string, object>
 
     private EnvironmentVar? ParseString(string s)
     {
-        var pattern = @"^(.*?):\s*""?(.*?)""?$";
-
-        var match = Regex.Match(s, pattern);
-
-        if (match.Success)
-        {
-            var key = match.Groups[1].Value;
-            var value = match.Groups[2].Value;
-            return new EnvironmentVar(key, value);
-        }
-
-        return null;
+        var (key, value) = s.SplitString();
+        return new EnvironmentVar(key, value);
     }
 }

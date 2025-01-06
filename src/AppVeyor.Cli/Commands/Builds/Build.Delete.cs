@@ -18,7 +18,7 @@ public class BuildDelete : AppveyorCommandBase
     {
         if (apiManager == null) throw new ArgumentNullException(nameof(apiManager));
 
-        var result = await apiManager.DeleteBuildsAsync(BuildId, ct);
+        var result = await apiManager.DeleteBuildsAsync(BuildId, WhatIf,ct);
         return result;
     }
 }

@@ -14,11 +14,10 @@ public class ListCommand : AppveyorCommandBase
 {
     protected override string Title => "Get projects ...";
     protected override string Tag => "project list";
-
     protected override async Task<ResponseResult> RunApiAsync(ApiManager apiManager, CancellationToken ct)
     {
         if (apiManager is null) throw new ArgumentNullException(nameof(apiManager));
-        var result = await apiManager.GetProjectsAsync(ct).ConfigureAwait(false);
+        var result = await apiManager.GetProjectsAsync(WhatIf, ct).ConfigureAwait(false);
         return result;
     }
 

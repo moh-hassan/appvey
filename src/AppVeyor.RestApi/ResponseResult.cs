@@ -8,6 +8,12 @@ using RestApi.Extensions;
 
 public class ResponseResult
 {
+    public string Url { get; set; } = string.Empty;
+    public string HttpMethod { get; set; } = string.Empty;
+    public string RequestBody { get; set; } = string.Empty;
+    public string HttpRequest => $"{HttpMethod.ToUpper()} {Url}";
+
+    public bool IsWhatIf { get; set; }
     public bool IsSuccess { get; set; }
     public HttpStatusCode? StatusCode { get; set; }
     public string? StatusCodeDescription { get; set; }
@@ -15,7 +21,7 @@ public class ResponseResult
     public string? ContentType { get; set; }
     public string Error { get; private set; } = string.Empty;
     public bool IsJsonHeader => ContentType == "application/json";
-    public string Request { get; private set; } = string.Empty;
+    public bool Verbose { get; set; }
 
     private ResponseResult()
     {
@@ -31,29 +37,50 @@ public class ResponseResult
         };
     }
 
-    public static async Task<ResponseResult> CreateAsync(HttpResponseMessage? response)
+    public static ResponseResult WhatIfRequest(string url,
+        string method = "get",
+        string json = "")
+    {
+        return new ResponseResult
+        {
+            Url = url,
+            HttpMethod = method,
+            RequestBody = json,
+            IsWhatIf = true,
+        };
+    }
+    public static async Task<ResponseResult> CreateAsync(HttpResponseMessage? response,
+        string url = "",
+        string method = "get",
+        string json = "")
     {
         if (response == null)
         {
             return new ResponseResult
             {
+                Url = url,
+                HttpMethod = method,
+                RequestBody = json,
                 IsSuccess = false,
                 StatusCode = null,
                 StatusCodeDescription = "Undefined StatusCode",
-                Error = "No response from server"
+                Error = "No response from server"                
             };
         }
 
         var content = await response.Content.ReadAsStringAsync();
         var result = new ResponseResult
         {
+            Url = url,
+            HttpMethod = method,
+            RequestBody = json,
             IsSuccess = response.IsSuccessStatusCode,
             ContentType = response.Content.Headers.ContentType?.MediaType,
             StatusCode = response.StatusCode,
             StatusCodeDescription = $"{(int)response.StatusCode} ({response.StatusCode})",
             ResponseString = response.IsSuccessStatusCode ? content : string.Empty,
             Error = response.IsSuccessStatusCode ? string.Empty : content,
-            Request = response.RequestMessage?.Method + " " + response.RequestMessage?.RequestUri?.AbsolutePath,
+            //HttpRequest = response.RequestMessage?.Method + " " + response.RequestMessage?.RequestUri?.AbsolutePath,
         };
 
         // check if the response is html and IsSuccess is true
@@ -75,6 +102,15 @@ public class ResponseResult
 
     public int ShowResult()
     {
+        if (IsWhatIf || Verbose)
+        {
+            WriteInfo("Http Request information:");
+            WriteSuccess($"Base url: {ApiEndpoints.AppVeyorBaseApi}");
+            WriteLine($"Http Request: {HttpMethod.ToUpper()} {Url}");
+            if (!string.IsNullOrWhiteSpace(RequestBody))
+                WriteLine($"Request Body: {RequestBody}");
+        }
+        if (IsWhatIf ) return 0;
         if (IsSuccess)
         {
             WriteSuccess($"Success Response. The StatusCode: {StatusCodeDescription}");

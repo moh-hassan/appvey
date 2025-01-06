@@ -8,7 +8,7 @@ using Api;
 using Api.Collection;
 using RestApi.Extensions;
 
-[CliCommand(Description = "Start build of branch most recent commit",
+[CliCommand(Description = Constant.Build_start_recent,
     Parent = typeof(AppveyorCommand.BuildCommand.StartCommand))]
 public class Recent : AppveyorCommandBase, IBrowse
 {
@@ -26,15 +26,23 @@ public class Recent : AppveyorCommandBase, IBrowse
     [CliOption(Description = "Allow to cancel build", Required = false)]
     public bool Cancel { get; set; }
 
-    [CliArgument(Description = "Environment variables", Required = false)]
+    [CliArgument(Description = "The list of key/value pairs separated by space.\nEvery variable should be in the form:\n  <varName:value> \n  OR <varName=value>\n  OR use file with @ prefix like <@filename> which contain the Var/Value pairs",
+        Required = false)]
     public List<string> EnvironmentVariables { get; set; } = [];
+    private EnvironmentDictionary _envs =>
+        new EnvironmentDictionary(EnvironmentVariables.ToArray());
 
     protected override async Task<ResponseResult> RunApiAsync(ApiManager apiManager, CancellationToken ct)
     {
         if (apiManager == null) throw new ArgumentNullException(nameof(apiManager));
 
-        var envs = new EnvironmentDictionary(EnvironmentVariables.ToArray());
-        var result = await apiManager.StartBuildMostRecentAsync(Slug, Branch, envs, ct);
+        var result = await apiManager
+            .StartBuildMostRecentAsync(Slug, Branch, _envs, WhatIf, ct);
+        if (WhatIf)
+        {
+            // result.ShowResult();
+            return result;
+        }
 
         if (result.StatusCode != HttpStatusCode.OK)
         {
@@ -53,7 +61,7 @@ public class Recent : AppveyorCommandBase, IBrowse
     {
         if (Cancel && Confirm("Cancel Build."))
         {
-            await apiManager.CancelBuildAsync(Slug, version, ct);
+            await apiManager.CancelBuildAsync(Slug, version, WhatIf, ct);
         }
     }
 

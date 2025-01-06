@@ -4,6 +4,8 @@ namespace AppVeyor.Cli.Commands;
 
 public interface IBrowse
 {
-    [CliOption(Description = "Open the build page in the default browser.", Required = false)]
+    [CliOption(Aliases = ["--browse"],
+        Description = "Open the build page in the default browser.",
+        Required = false)]
     bool Browse { get; set; }
 }

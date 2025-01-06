@@ -26,7 +26,8 @@ public class Rerun : AppveyorCommandBase, IBrowse
     {
         if (apiManager == null) throw new ArgumentNullException(nameof(apiManager));
 
-        var result = await apiManager.ReRunBuildCommitAsync(BuildId, Incomplete, ct);
+        var result = await apiManager
+            .ReRunBuildCommitAsync(BuildId, Incomplete, WhatIf, ct);
         if (result.StatusCode != HttpStatusCode.OK)
         {
             WriteLine("Failed to start the build");

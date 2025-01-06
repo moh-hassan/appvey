@@ -23,7 +23,8 @@ public class Add : AppveyorCommandBase
     {
         if (apiManager == null) throw new ArgumentNullException(nameof(apiManager));
 
-        var result = await apiManager.AddProjectAsync(RepositoryProvider, RepositoryName, ct);
+        var result = await apiManager
+            .AddProjectAsync(RepositoryProvider, RepositoryName, WhatIf, ct);
         return result;
     }
 }

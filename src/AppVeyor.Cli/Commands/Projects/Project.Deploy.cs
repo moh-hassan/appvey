@@ -27,7 +27,7 @@ public class Deploy : AppveyorCommandBase
     protected override async Task<ResponseResult> RunApiAsync(ApiManager apiManager, CancellationToken ct)
     {
         var result = await apiManager
-            .GetProjectDeploymentsAsync(Slug, StartDeploymentId, RecordsNumber, ct)
+            .GetProjectDeploymentsAsync(Slug, StartDeploymentId, RecordsNumber, WhatIf, ct)
             .ConfigureAwait(false);
         return result;
     }

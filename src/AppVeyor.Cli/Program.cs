@@ -16,7 +16,6 @@ public static class Program
         try
         {
             ServiceLocator.RegisterService<IEnv>(new Env());
-            var bootstrapper = new Bootstrapper();
             var result= await Bootstrapper
                 .StartAsync(args)
                 .ConfigureAwait(false);

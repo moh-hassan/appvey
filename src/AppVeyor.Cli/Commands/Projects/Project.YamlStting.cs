@@ -18,7 +18,7 @@ public class GetYamlSetting : AppveyorCommandBase
     protected override async Task<ResponseResult> RunApiAsync(ApiManager apiManager, CancellationToken ct)
     {
         if (apiManager is null) throw new ArgumentNullException(nameof(apiManager));
-        var result = await apiManager.GetProjectYamlSettingsAsync(Slug, ct).ConfigureAwait(false);
+        var result = await apiManager.GetProjectYamlSettingsAsync(Slug, WhatIf, ct).ConfigureAwait(false);
         return result;
     }
 }
