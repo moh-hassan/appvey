@@ -1,8 +1,17 @@
 # appvey 
 # Appveyor cli tool
 
-
 ## Version 1.1.0
+**Release Date:**  2025-01-08
+- Add what-if option to all commands.
+- Add Examples to help.
+- Add Users command.
+- Add http command.
+- Support Windows Credential Manager.
+- Sign packages by signpath sign-release certificate.
+
+
+## Version 1.1.0-dev
 **Release Date:**  2024-12-30
 - Add Users command.
 - Add http command.

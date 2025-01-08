@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup>
     <LangVersion>12.0</LangVersion>
-    <Version>1.1.0-dev</Version>
+    <Version>1.1.0</Version>
     <ImplicitUsings>enable</ImplicitUsings>
     <SolutionDir Condition="'$(SolutionDir)'==''">$(MSBuildThisFileDirectory)</SolutionDir>
     <PackageOutputPath>$(SolutionDir)..\nupkg</PackageOutputPath>
@@ -15,7 +15,7 @@
     </Description>
     <IsTestProject>$(MSBuildProjectName.Contains('Test'))</IsTestProject>
     <Company>appvey</Company>
-    <PackageReleaseNotes>https://github.com/moh-hassan/appvey/ReleaseNotes.md </PackageReleaseNotes>
+    <PackageReleaseNotes>https://github.com/moh-hassan/appvey/blob/main/ReleaseNotes.md</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <IncludeSourceRevisionInInformationalVersion>true</IncludeSourceRevisionInInformationalVersion>
     <PackageTags>appveyor;appvey;restapi;https;commandline;csharp;ci/cd;automation;devops;continuousintegration;appveyorapi</PackageTags>

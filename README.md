@@ -53,8 +53,8 @@ Download development version from [myget](https://www.myget.org/feed/appvey/pack
   - Update project build number
   - Delete project build cache
   - Delete project
-  
-- support reading appveyor token from keyboard, external file, environment variables or piping the token.
+- Implement Users Rest API  
+- Support reading Appveyor token from keyboard, external file, environment variables, Windows Manager Credential (Windows Users Only) or piping the token.
 - Display result in a tabular form.
 - Show summary of response of important information.
 - Allow deleting the Cancelled or failed builds in history command which is confirmed by the user.
@@ -65,7 +65,12 @@ Download development version from [myget](https://www.myget.org/feed/appvey/pack
 - Using response file (one or more) which contain options and arguments or the value of any option like token. The response file argument start with '@'.
 - Save the output response json to external files.
 - Save the screen output to external file.
+- Can run in what-if mode to show the result without executing the command.
 - Support Control-C to stop program with grace stop.
+- Support for Windows, Linux and MacOs.
+- Support for .Net 8.0 and above.
+- The package is signed and verified.
+
 ----------
 
 ## Install and Usage
@@ -97,6 +102,9 @@ Run the commands as described in [wiki pages](https://github.com/moh-hassan/appv
 
 Note: help can be displayed by any of: -? or -h or --help
 
+## Give a Star! :star:
+
+If you are using this project, please show your support by giving this project a star!. Thanks!
 
 ------
  ## Documentation
@@ -117,9 +125,6 @@ MIT License. Read [license](https://github.com/moh-hassan/appvey?tab=MIT-1-ov-fi
 All programs or packages will not transfer any information to other networked systems unless specifically requested by the user or the person installing or operating it. 
 
 ## Acknowledgements: 
-
-**Thank you [JetBrains](https://www.jetbrains.com "JetBrain") for [Resharper](https://www.jetbrains.com/resharper/ "Resharper") open source license**
-<img src="src/art/jb_beam.png" alt="jetbrains" width="200"/>
 
 **Thank you [SignPath](https://signpath.io?utm_source=foundation&utm_medium=github&utm_campaign=odata2poco) for free code signing.**
 
