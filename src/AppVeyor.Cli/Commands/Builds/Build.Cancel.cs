@@ -5,7 +5,11 @@ namespace AppVeyor.Cli.Commands.Build;
 #nullable disable
 using Api;
 
-[CliCommand(Description = "Cancel build", Parent = typeof(AppveyorCommand.BuildCommand))]
+[CliCommand(
+    Description = "Cancel build.\n" +
+    "Example:\n" +
+    "\tappvey build cancel -a my-account -t my-token -s my-project 1.2.3",
+    Parent = typeof(AppveyorCommand.BuildCommand))]
 public class Cancel : AppveyorCommandBase
 {
     protected override string Title => "Cancel build ...";

@@ -18,11 +18,15 @@ public abstract class AppveyorCommandBase
     protected virtual string Tag { get; }
 
     [CliOption(Required = false, Aliases = ["-t", "--token"],
-        Description = "Appveyor token v2.\n Type dash '-' to enter/paste token from keyboard\nor @filename to read token from filename\nor ignore it to read token from environment variable.")]
+        Description = "Appveyor token v2.\nTo enter your token, you have four options:\n" +
+        "\u2022 Enter your token from your keyboard.\n" +
+        "\u2022 Type a hyphen ('-'): This allows you to directly type or paste your token from your keyboard.\n" +
+        "\u2022 Type '@' followed by the filename: This tells the system to read your token from the specified file.\n" +
+        "\u2022 Ignore this option: If you don't enter anything, the system will try to automatically read your token from an environment variable or Windows Credential Manager: Available for Windows users only. This assumes you have already set up the token using config command.")]
     public string Token { get; set; }
 
     [CliOption(Required = false, Aliases = ["-a", "--account"],
-        Description = "Appveyor User account or skip it to read account from environment var.")]
+        Description = "Appveyor User account: Optional. If not provided, the system will look for your account in the environment variables. This assumes you have already set up the account using config command.")]
     public virtual string Account { get; set; }
 
     [CliOption(Required = false, HelpName = "http://proxy:port",
@@ -38,7 +42,7 @@ public abstract class AppveyorCommandBase
         ValidationMessage = "Proxy user/password should be in the form 'username:password'")]
     public string ProxyUser { get; set; }
 
-    [CliOption(Required = false, Aliases = ["-s", "--save"],
+    [CliOption(Required = false, Aliases = ["--save"],
         Description = "File to save output response.")]
     public FileInfo Save { get; set; }
 
@@ -50,8 +54,11 @@ public abstract class AppveyorCommandBase
         Description = "Run the command without executing the actions of the command so no changes occur.\r\nIt displays optins and argument values and the expected Http Request:\r\n (Url, Method  <Get|Post|Put|Delete>, JsonBody.")]
     public bool WhatIf { get; set; }
     [CliOption(Description = "Verbose http connection details.",
-        Aliases = ["-v", "--verbose"])]
+        Name = "--verbose",
+       Aliases = ["--verbose"]
+        )]
     public bool Verbose { get; set; }
+
     private IEnv Env => ServiceLocator.GetService<IEnv>();
     private HttpConnection _httpConnection;
 
@@ -68,8 +75,8 @@ public abstract class AppveyorCommandBase
     }
 
     public virtual async Task<int> RunAsync(CliContext context)
-    {
-         _httpConnection = HttpConnection
+    {      
+        _httpConnection = HttpConnection
             .Create(Env, Account, Token, ProxyAddress, ProxyUser, Verbose);
         //Process request
         var ct = context.CancellationToken;

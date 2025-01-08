@@ -5,7 +5,11 @@ namespace AppVeyor.Cli.Commands.Project;
 #nullable disable
 using Api;
 
-[CliCommand(Description = "Get project settings", Name = "setting",
+[CliCommand(
+    Description = "Get project settings.\n" +
+    "Example:\n" +
+    "\tappvey project settings -a my-account -t my-token -s my-project",
+    Name = "setting",
     Parent = typeof(AppveyorCommand.ProjectCommand))]
 public class GetSetting : AppveyorCommandBase
 {

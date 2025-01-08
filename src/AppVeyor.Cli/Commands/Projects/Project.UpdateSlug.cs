@@ -6,14 +6,20 @@ using Api;
 
 #nullable disable
 
-[CliCommand(Description = "Update project slug",Name = "slug",
+[CliCommand(
+    Description = "Update Appveyor project slug.\n" +
+    "Example:\n" +
+    "\tappvey project update slug -a my-account -t my-token -j file.json",
+    Name = "repo",
     Parent = typeof(AppveyorCommand.ProjectCommand.UpdateCommand))]
 public class SlugCommand : AppveyorCommandBase
 {
     protected override string Title => "Update project slug ...";
     protected override string Tag => "project update slug";
 
-    [CliOption(Description = "Json file that contain project update", Required = true,
+    [CliOption(
+        Description = "JSON File Containing Project Update Information",
+        Required = true,
         ValidationRules = CliValidationRules.ExistingFile)]
     public FileInfo Json { get; set; }
 

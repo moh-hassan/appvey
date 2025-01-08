@@ -4,7 +4,11 @@ namespace AppVeyor.Cli.Commands.Build;
 
 using Api;
 
-[CliCommand(Description = "Delete build", Name = "delete",
+[CliCommand(
+    Description = "Delete build.\n" +
+    "Example:\n" +
+    "\tappvey build delete -a my-account -t my-token 123456",
+    Name = "delete",
     Parent = typeof(AppveyorCommand.BuildCommand))]
 public class BuildDelete : AppveyorCommandBase
 {

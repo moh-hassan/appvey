@@ -10,7 +10,12 @@ using AppVeyor.Api;
 #nullable disable
 public partial class AppveyorCommand
 {
-    [CliCommand(Description = "Run Appveyor Rest Api")]
+    [CliCommand(Description = "Run Appveyor Rest Api Get/Post/Put/Delete.\n" +
+        "Example 1: Get request\n" +
+        "\tappvey /api/projects/my-account/my-project/history?recordsNumber=20\n" +
+         "Example 2: Post request using json file\n" +
+        "\tappvey -m post --json @file.json  /api/account/my-account/builds\n" +
+        "")]
     public class HttpCommand : AppveyorCommandBase
     {
         protected override string Title => "Run Appveyor Rest Api ...";

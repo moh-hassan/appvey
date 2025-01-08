@@ -5,7 +5,12 @@ namespace AppVeyor.Cli.Commands.Project;
 #nullable disable
 using Api;
 
-[CliCommand(Description = "Get project settings in YAML", Name = "yaml",
+[CliCommand(
+    Description = "Get project settings in YAML format.\n" +
+    "Example:\n" +
+    "\tappvey project yaml -a my-account -t my-token -s my-project ",
+    Name = "yaml",
+    Aliases = ["yml"],
     Parent = typeof(AppveyorCommand.ProjectCommand))]
 public class GetYamlSetting : AppveyorCommandBase
 {

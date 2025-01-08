@@ -9,7 +9,13 @@ using Api.Security;
 
 #nullable disable
 [CliCommand(
-    Description = "Configure Appveyor token and account and allow storing token to windows Credential Manager",
+    Description = "Configure Appveyor token and account and allow storing token to Environment variables \n\tor Windows Credential Manager (Windows users only).\n" +
+    "Example 1: Storing token to Environment Variable\n" +
+    "\tappvey config -a my-account -t my-token --action save\n" +
+    "Example 2: Storing token to Windows Credential Manager\n" +
+    "\tappvey config -a my-account -t my-token --action save --use-cred\n" +
+    "Example 3: Show token store information\n" +
+    "\tappvey config -a my-account --action info\n" ,
     Parent = typeof(AppveyorCommand))]
 public class ConfigCommand
 {

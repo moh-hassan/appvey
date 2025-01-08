@@ -6,7 +6,12 @@ namespace AppVeyor.Cli.Commands.Project;
 using Api;
 
 
-[CliCommand(Description = "Update project settings in YAML", Name = "yaml",
+[CliCommand(
+    Description = "Update project settings from YAML file.\n" +
+    "Example:\n" +
+    "\tappvey project update yaml -a my-account -t my-token -s my-project setting.yaml",
+    Name = "yaml",
+    Aliases = ["yml"],
     Parent = typeof(AppveyorCommand.ProjectCommand.UpdateCommand))]
 public class UpdateYamlSetting : AppveyorCommandBase
 {
@@ -16,7 +21,9 @@ public class UpdateYamlSetting : AppveyorCommandBase
     [CliOption(Description = "Project slug")]
     public string Slug { get; set; }
 
-    [CliArgument(Description = "YAML file that contain project settings", Required = true,
+    [CliArgument(Description = "YAML file that contain project settings",
+        Required = true,
+        HelpName = "yaml-file",
         ValidationRules = CliValidationRules.ExistingFile)]
     public FileInfo YamlSetting { get; set; }
 

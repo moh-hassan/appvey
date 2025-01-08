@@ -6,7 +6,12 @@ namespace AppVeyor.Cli.Commands.Build;
 using Api;
 using Api.Exceptions;
 
-[CliCommand(Description = "Download build log", Name = "log",
+[CliCommand(Description = "Download build log.\n" +
+    "Example 1:\n" +
+    "\tappvey build download log -a my-account -t my-token -s my-project --job-id 1234\n" +
+    "Example 2:\n" +
+    "\tappvey build download log -a my-account -t my-token -s my-project --version 1.2.3",
+    Name = "log",
     Parent = typeof(AppveyorCommand.BuildCommand.DownloadCommand))]
 public class DownloadLog : AppveyorCommandBase
 {
@@ -19,7 +24,9 @@ public class DownloadLog : AppveyorCommandBase
     [CliOption(Description = "Build JobId.", Required = false)]
     public string JobId { get; set; }
 
-    [CliOption(Description = "Build version. Both job-id and build-version are mutually exclusive.", Required = false)]
+    [CliOption(
+        Description = "Build version. You can only specify one of the following: job-id or build-version.\nYou cannot use both at the same time.",
+        Required = false)]
     public string Version { get; set; }
 
     protected override async Task<ResponseResult> RunApiAsync(ApiManager apiManager, CancellationToken ct)

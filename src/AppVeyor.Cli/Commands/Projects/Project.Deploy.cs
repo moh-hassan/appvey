@@ -8,7 +8,9 @@ using Api.Model.AppveyorDeployment;
 using ConsoleTables;
 using RestApi.Extensions;
 
-[CliCommand(Description = "Get project deployments",
+[CliCommand(Description = "Get project deployments.\n" +
+    "Example:\n" +
+    "\tappvey project deploy -a my-account -t my-token -s my-project 1234",
     Parent = typeof(AppveyorCommand.ProjectCommand))]
 public class Deploy : AppveyorCommandBase
 {

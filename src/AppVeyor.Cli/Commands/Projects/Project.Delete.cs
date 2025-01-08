@@ -5,7 +5,11 @@ namespace AppVeyor.Cli.Commands.Project;
 #nullable disable
 using Api;
 
-[CliCommand(Description = "Delete project", Name = "delete",
+[CliCommand(Description = "Delete project.\n" +
+    "Example:\n" +
+    "\tappvey project delete -a my-account -t my-token -s my-project",
+    Name = "delete",
+    Aliases = ["del"],
     Parent = typeof(AppveyorCommand.ProjectCommand))]
 public class ProjectDelete : AppveyorCommandBase
 {

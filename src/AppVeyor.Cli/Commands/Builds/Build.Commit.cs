@@ -6,7 +6,11 @@ using System.Net;
 using Api;
 
 #nullable disable
-[CliCommand(Description = "Start build of specific branch commit", Parent = typeof(AppveyorCommand.BuildCommand.StartCommand))]
+[CliCommand(
+    Description = "Start build of specific branch commit.\n" +
+    "Example:\n" +
+    "\tappvey build start commit -a my-account  -t my-token -s my-project -b master 856cf6c2",
+    Parent = typeof(AppveyorCommand.BuildCommand.StartCommand))]
 public class Commit : AppveyorCommandBase
 {
     protected override string Title => "Start build of specific branch commit ...";

@@ -8,7 +8,12 @@ using ConsoleTables;
 using RestApi.Extensions;
 using RestApi.Model;
 
-[CliCommand(Description = "List all projects", Name = "list",
+[CliCommand(
+    Description = "List all projects.\n" +
+    "Example:\n" +
+    "\tappvey project list -a my-account -t my-token",
+    Name = "list",
+    Aliases = new[] { "ls" ,"get"},
     Parent = typeof(AppveyorCommand.ProjectCommand))]
 public class ListCommand : AppveyorCommandBase
 {

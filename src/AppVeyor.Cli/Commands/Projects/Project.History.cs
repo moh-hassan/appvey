@@ -9,7 +9,11 @@ using ConsoleTables;
 using RestApi.Extensions;
 using RestApi.Model;
 
-[CliCommand(Description = "Get project history", Parent = typeof(AppveyorCommand.ProjectCommand))]
+[CliCommand(
+    Description = "Get project history.\n" +
+    "Example:\n" +
+    "\tappvey project history -a my-account -t my-token -s my-project",
+    Parent = typeof(AppveyorCommand.ProjectCommand))]
 public class History : AppveyorCommandBase
 {
     protected override string Title => "Get project history ...";
@@ -18,7 +22,7 @@ public class History : AppveyorCommandBase
     [CliOption(Description = "Project slug")]
     public string Slug { get; set; }
 
-    [CliOption(Required = false)]
+    [CliOption(Description = "Repository branch", Required = false)]
     public string Branch { get; set; }
 
     [CliOption(Description = "Number of records",

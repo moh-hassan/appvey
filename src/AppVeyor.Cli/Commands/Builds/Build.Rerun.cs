@@ -6,7 +6,11 @@ namespace AppVeyor.Cli.Commands.Build;
 using System.Net;
 using Api;
 
-[CliCommand(Description = "Re-run build", Parent = typeof(AppveyorCommand.BuildCommand))]
+[CliCommand(
+    Description = "Re-run build.\n" +
+    "Example:\n" +
+    "\tappvey build rerun -a my-account -t my-token -s my-project 1234",
+    Parent = typeof(AppveyorCommand.BuildCommand))]
 public class Rerun : AppveyorCommandBase, IBrowse
 {
     protected override string Title => "Re-run build ...";
@@ -15,7 +19,7 @@ public class Rerun : AppveyorCommandBase, IBrowse
     [CliOption(Description = "False (default value) for full build re-run. Set it to True to rerun only failed or cancelled jobs in multi jobs build.")]
     public bool Incomplete { get; set; }
 
-    [CliOption(Description = "Optional Slug, need to browse build page", Required = false)]
+    [CliOption(Description = "A Slug is not required. However, you might need to navigate to the build page to find the information of the build during run.", Required = false)]
     public string Slug { get; set; }
 
     public bool Browse { get; set; }

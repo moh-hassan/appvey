@@ -6,7 +6,11 @@ using Api;
 
 #nullable disable
 
-[CliCommand(Description = "Start build of Pull Request", Aliases = ["pull-request"],
+[CliCommand(
+    Description = "Start build of Pull Request.\n" +
+    "Example :\n" +
+    "\tappvey build start pr -a my-account -t my-token -s my-project 1234",
+    Aliases = ["pull-request"],
     Parent = typeof(AppveyorCommand.BuildCommand.StartCommand))]
 public class Pr : AppveyorCommandBase
 {

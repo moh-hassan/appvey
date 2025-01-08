@@ -64,4 +64,9 @@ public static class StringExt
             => current.AddQueryString(kvp.Key, kvp.Value.ToString()));
         return uri;
     }
+
+    public static string Enum2String<T>(this T value) where T : Enum
+    {
+        return Enum.GetName(typeof(T), value) ?? string.Empty;
+    }    
 }

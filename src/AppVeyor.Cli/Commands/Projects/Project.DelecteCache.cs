@@ -5,7 +5,13 @@ namespace AppVeyor.Cli.Commands.Project;
 #nullable disable
 using Api;
 
-[CliCommand(Description = "Delete project build cache", Aliases = ["dc"],
+[CliCommand(
+    Description = "Delete project build cache.\n" +
+    "Example 1:\n" +
+    "\tappvey project delete-cache -a my-account -t my-token -s my-project\n" +
+    "Example 2:\n" +
+     "\tappvey project dc -a my-account -t my-token -s my-project",
+    Aliases = ["dc"],
     Parent = typeof(AppveyorCommand.ProjectCommand))]
 public class DeleteCache : AppveyorCommandBase
 {

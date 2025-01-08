@@ -2,11 +2,13 @@
 
 namespace AppVeyor.Cli.Commands;
 
+using System.CommandLine.Help;
+
 #nullable disable
 
-[CliCommand(Description = "Appvey cli for Appveyor CI/CD")]
+[CliCommand(Description = "Appvey cli for Appveyor CI/CD", ShortFormAutoGenerate = true)]
 public partial class AppveyorCommand
-{
+{  
     [CliCommand(Description = "Project command", Name = "project")]
     public class ProjectCommand
     {

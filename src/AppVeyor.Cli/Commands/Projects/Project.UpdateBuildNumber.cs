@@ -5,7 +5,13 @@ namespace AppVeyor.Cli.Commands.Project;
 #nullable disable
 using Api;
 
-[CliCommand(Description = "Update project build number", Name = "build-number",
+[CliCommand(
+    Description = "Update project build number.\n" +
+    "Example 1:\n" +
+    "\tappvey project update build-number -a my-account -t my-token -s my-project 30\n" +
+    "Example 2:\n" +
+    "\tappvey project update bn -a my-account -t my-token -s my-project 30",
+    Name = "build-number",
     Aliases = ["bn"],
     Parent = typeof(AppveyorCommand.ProjectCommand.UpdateCommand))]
 public class UpdateBuildNumber : AppveyorCommandBase

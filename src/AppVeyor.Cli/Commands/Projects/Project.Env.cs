@@ -5,7 +5,11 @@ namespace AppVeyor.Cli.Commands.Project;
 #nullable disable
 using Api;
 
-[CliCommand(Description = "Get project environment variables", Parent = typeof(AppveyorCommand.ProjectCommand),
+[CliCommand(
+    Description = "Get project environment variables.\n" +
+    "Example:\n" +
+    "\tappvey Project env -a my-account -t my-token -s my-project",
+    Parent = typeof(AppveyorCommand.ProjectCommand),
         Name = "env")]
 public class EnvironmentCommand : AppveyorCommandBase
 {

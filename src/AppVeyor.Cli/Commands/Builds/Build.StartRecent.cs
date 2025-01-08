@@ -8,7 +8,7 @@ using Api;
 using Api.Collection;
 using RestApi.Extensions;
 
-[CliCommand(Description = Constant.Build_start_recent,
+[CliCommand(Description = Strings.Build_start_recent,
     Parent = typeof(AppveyorCommand.BuildCommand.StartCommand))]
 public class Recent : AppveyorCommandBase, IBrowse
 {

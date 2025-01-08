@@ -6,7 +6,10 @@ namespace AppVeyor.Cli.Commands.Project;
 using Api;
 using Api.Collection;
 
-[CliCommand(Description = "Update project environment variables",
+[CliCommand(
+    Description = "Update project environment variables.\n" +
+    "Example:\n" +
+    "\tappvey project update env -a my-account -t my-token -s my-project var1:value1  secret_var:123ab45:true",
         Parent = typeof(AppveyorCommand.ProjectCommand.UpdateCommand), Name = "env")]
 public class UpdateEnvironment : AppveyorCommandBase
 {
@@ -16,7 +19,9 @@ public class UpdateEnvironment : AppveyorCommandBase
     [CliOption(Description = "Project slug")]
     public string Slug { get; set; }
 
-    [CliArgument(Description = "environment var in the form name:value. If it's encrypted, it's in the form name:value:true", Required = false)]
+    [CliArgument(
+        Description = "Environment variables are defined in the format 'name:value'.\nIf the value is encrypted, please include 'true' after the value (e.g., 'name:value:true').",
+        Required = false)]
     public List<string> Env { get; set; }
 
     [CliOption(Description = "File name that contain environment json string. Only Env arguments or Json option is allowed", Required = false, ValidationRules = CliValidationRules.ExistingFile)]

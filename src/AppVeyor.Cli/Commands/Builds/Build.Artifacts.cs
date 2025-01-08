@@ -7,13 +7,15 @@ using System.Text.RegularExpressions;
 using Api;
 using Api.Exceptions;
 
-[CliCommand(Description = "Download build artifacts of last build or by a version in the project",
+[CliCommand(Description = "Download build artifacts of last build or by a version in the project.\n" +
+    "Example:\n" +
+    "\tappvey build download artifacts -a my-account -t my-token -s my-project -d my-directory",
     Parent = typeof(AppveyorCommand.BuildCommand.DownloadCommand), ShortFormAutoGenerate = true)]
 public class Artifacts : AppveyorCommandBase
 {
     protected override string Title => "Download build artifacts ...";
     protected override string Tag => "build download artifacts";
-    
+
     [CliOption(Description = "Slug name", Required = true)]
     public string Slug { get; set; }
 
@@ -27,10 +29,11 @@ public class Artifacts : AppveyorCommandBase
     public string Version { get; set; }
 
     [CliOption(Description = "Directory where to save artifacts, relative or absolute path",
-        Required = false)]
+        Required = false, Name = "-d", Aliases = ["-d", "--dir"])]
     public DirectoryInfo Location { get; set; } = new(".");
 
-    [CliOption(Description = "Show artifacts without download", Name = "--list", Required = false)]
+    [CliOption(Description = "Show artifacts without download", Name = "--list",
+        Required = false)]
     public bool ShowOnly { get; set; }
 
     [CliOption(Description = "Filter artifacts using wildcard symbols", Required = false,
@@ -75,7 +78,7 @@ public class Artifacts : AppveyorCommandBase
 
         return ResponseResult.Default();
     }
-    
+
     private string GetPattern()
     {
         if (Filter == null || Filter.Length == 0) return string.Empty;

@@ -9,7 +9,11 @@ using AppVeyorCli;
 using RestApi.Extensions;
 
 [CliCommand(Name = "build-version",Aliases = ["bv"],
-    Description = "Get project build by version",
+    Description = "Get project build by version.\n" +
+    "Example 1:\n" +
+    "\tappvey project build-version -a my-account -t my-token -s my-project 1.2.3\n" +
+    "Example 2:\n" +
+    "\tappvey project bv -a my-account -t my-token -s my-project 1.2.3\n",
     Parent = typeof(AppveyorCommand.ProjectCommand))]
 public class BuildByVersion : AppveyorCommandBase
 {

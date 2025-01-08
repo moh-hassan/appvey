@@ -6,7 +6,13 @@ namespace AppVeyor.Cli.Commands.Project;
 using Api;
 using AppVeyorCli;
 
-[CliCommand(Description = "Get project last branch build",Aliases = ["lb"],
+[CliCommand(
+    Description = "Get project last branch build.\n" +
+    "Example 1:\n" +
+    "\tappvey project last-build  -a my-account -t my-token -s my-project\n" +
+    "Example 2:\n" +
+    "\tappvey project lb  -a my-account -t my-token -s my-project",
+    Aliases = ["lb"],
     Parent = typeof(AppveyorCommand.ProjectCommand))]
 public class LastBuild : AppveyorCommandBase
 {
